@@ -76,11 +76,11 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 
 	public function AddTransaksiJualBeli_beli()
 	{
+		date_default_timezone_set('asia/jakarta');
 		$id =  $this->input->post('id');		
 		$lembarSaham =  $this->input->post('lembarSaham');		
 		$keterangan =  $this->input->post('keterangan');
 		$hargaSaham =  $this->input->post('hargaSaham');
-	
 
 		$data = array(
 			'id_properti' => $id,
@@ -89,13 +89,17 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 			'harga_saham' => $hargaSaham, 
 			'order_saham' => 1, 
 			'status' => "pending", 
-			'keterangan' => $keterangan 
+			'keterangan' => $keterangan,
+			'create_date' => date('Y-m-d H:i:s'),
+			'modified_date' => date('Y-m-d H:i:s')
+
 		);		
 		$result = $this->db->insert('tb_transaksi_jual_beli',$data);
 		echo json_encode(["data" => $result]);
 	}
 	public function AddTransaksiJualBeli_jual()
 	{
+		date_default_timezone_set('asia/jakarta');
 		$id =  $this->input->post('id');		
 		$lembarSahamJual =  $this->input->post('lembarSahamJual');		
 		$keterangan =  $this->input->post('keterangan');
@@ -108,7 +112,9 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 			'harga_saham' => $hargaSahamJual, 
 			'order_saham' => 1, 
 			'status' => "success", 
-			'keterangan' => $keterangan 
+			'keterangan' => $keterangan,
+			'create_date' => date('Y-m-d H:i:s'),
+			'modified_date' => date('Y-m-d H:i:s') 
 		);		
 		$result = $this->db->insert('tb_transaksi_jual_beli',$data);
 		echo json_encode(["data" => $result]);

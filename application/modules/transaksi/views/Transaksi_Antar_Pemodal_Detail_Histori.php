@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Obsido-Transaksi Detail</title>
+        <title>Obsido-Transaksi Detail Histori</title>
         <link rel="icon" href="<?php echo base_url("assets/icons/favicon.png"); ?>" type="image/png" sizes="16x16" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -181,21 +181,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="b" style="background: ; width: 96%; height: 800px;margin-left:2%;">
-                                                    <div class="b1" style="background: ;width: 100%;height: 40px;margin-top:15px;margin-bottom: 5px;">
-                                                        <div class="b11" style="width: 50%;height: 100%;background: ;float: left;">
-                                                        <center>
-                                                            <button class="btn btn-primary" onclick="modalBeli()" style=";padding-right: 40px;padding-left: 40px;">Beli</button>
-                                                            <button class="btn btn-primary ml-2 mr-2">Ralat Transaksi</button>
-                                                            <button class="btn btn-primary">Batal Transaksi</button>
-                                                        </center>
-                                                        </div>
-                                                        <div class="b11" style="width: 50%;height: 100%;background: ;float: left;">
-                                                            <center>
-                                                            <button class="btn btn-primary" onclick="modalJual()" style=";padding-right: 40px;padding-left: 40px;">Jual</button>
-                                                            <button class="btn btn-primary ml-2 mr-2">Ralat Transaksi</button>
-                                                            <button class="btn btn-primary">Batal Transaksi</button>
-                                                        </center>
-                                                        </div>
+                                                    <div class="b1" style="background: ;width: 100%;height: 40px;margin-top:15px;margin-bottom: 5px;">                                                      
                                                     </div>                                                    
                                                     <style type="text/css">
                                                         
@@ -221,35 +207,19 @@
                                                         }
                                                     </style>
                                                     <div class="b2" style="background: ;width: 100%;height: 700px;">
-                                                        <div class="b21" style="background: ;height: 100%;width: 50%;float: left;margin-top: 10px;">  
+                                                        <div class="b21" style="background: ;height: 100%;width: 100%;margin-top: 10px;">  
                                                         <center>    
-                                                            <table width="81%">
+                                                            <table width="95%">                                                          
                                                                 <tr>
-                                                                    <td colspan="3" style="text-align: center;">Transaksi Beli</td>
+                                                                	<td>Tanggal Transaksi</td>
+                                                                	<td>Keterangan</td>
+                                                                	 <td>Harga Saham</td>
+                                                                	 <td>Jumlah Saham</td>
+                                                                    <td>Status</td>
+                                                                    <td style="width:130px;">Aksi</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td>Jumlah Order</td>
-                                                                    <td>Jumlah Saham</td>
-                                                                    <td>Harga Saham</td>
-                                                                </tr>
-                                                                <tbody id="transaksiBeli"></tbody>
+                                                                <tbody id="tableHistory"></tbody>
                                                                 
-                                                            </table>
-                                                            </center>
-                                                        </div>
-                                                        
-                                                        <div class="b22" style="background: ;height: 100%;width: 50%;float: left;margin-top: 10px;">  
-                                                        <center>    
-                                                            <table width="81%">
-                                                                <tr>
-                                                                    <td colspan="3" style="text-align: center;">Transaksi Jual</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Jumlah Order</td>
-                                                                    <td>Jumlah Saham</td>
-                                                                    <td>Harga Saham</td>
-                                                                </tr>
-                                                                 <tbody id="transaksiJual"></tbody>
                                                             </table>
                                                             </center>
                                                         </div>
@@ -464,222 +434,68 @@
         </div>
     </div>
 </div>
-
+<style type="text/css">
+	.btn-pink {
+    color: #fff;
+    background-color: #fb3636;
+    border-color: #fb3636;    
+	}
+	button.btn.btn-pink.btn-sm {
+    height: 25px;
+    margin-top: -6px;
+    margin-bottom: -6px;
+    /* text-align: center; */
+    padding-top: 0;
+	}
+</style>
 <!-- footer end -->
             </div>
         </div>
         <script type="text/javascript">
-        $(document).ready(function(){
-            getTransaksiBeli();
-            getTransaksiJual();
-            HargaWajar();
-            totalInvestasiJual();
-            var sisaSaldo = <?php echo $this->session->userdata("user")->saldo ?>; 
-            $("#sisaSaldo").val(numberWithDot(sisaSaldo));
-          
+        $(document).ready(function(){     
+          HargaWajar();
+          getTableHistory();
         });
-        $("#lembarSaham").on("input", function () {
-          rumusTotalAndSisaSaldo();  
-        });
-        $("#hargaSaham").on("input", function () {
-          rumusTotalAndSisaSaldo();  
-        });   
-        function rumusTotalAndSisaSaldo(){
-           var lembarSaham = parseInt($("#lembarSaham").val());
-            var hargaSaham =  $("#hargaSaham").val();           
-            var biayaAdmin = parseInt($("#biayaAdmin").val());
-            var harga_per_lembar = "<?php echo $harga_per_lembar ?>";
-            var totalInvestasi = (lembarSaham * hargaSaham) + biayaAdmin;
-            $("#totalInvestasi").val(numberWithDot(totalInvestasi));  
-            if($("#lembarSaham").val()=="")$("#totalInvestasi").val("");
-            
-            var sisaSaldo = <?php echo $this->session->userdata("user")->saldo ?> - totalInvestasi; 
-            $("#sisaSaldo").val(numberWithDot(sisaSaldo));
-            if($("#totalInvestasi").val()=="")$("#sisaSaldo").val(numberWithDot("<?php echo $this->session->userdata("user")->saldo ?>"));      
-        }
-
-        function clearBeli(){
-            $("#lembarSaham").val("");
-            $("#hargaSaham").val("");
-            $("#totalInvestasi").val("");
-        } 
-        function clearJual(){
-            $("#lembarSahamJual").val("");
-            $("#hargaSahamJual").val("");
-            $("#txtTotalInvestasi").val("");
-        } 
-        setInterval(getTransaksiBeli,1000);
-        setInterval(getTransaksiJual,1000);
-        setInterval(HargaWajar,3000);
-        function getTransaksiBeli(){
-            var $id = "<?php echo $id ?>";
-            $.ajax({
-                type : "POST",
-                url  : "<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/GetTransaksiBeli/'.$id)?>",
-                dataType : "JSON",
-                cache:false,
-                success: function(response){
-                  
-                       var htmlBeli ="";
-                       for(i=0;i<response.getDataBeli.dataBeli.length;i++){
-                       var data = response.getDataBeli.dataBeli[i];
-                       htmlBeli += `<tr>`;
-                       htmlBeli += `<td>${numberWithDot(data.order_saham)}</td>`;
-                       htmlBeli += `<td>${numberWithDot(data.lembar_saham)}</td>`;
-                       htmlBeli += `<td>${numberWithDot(data.harga_saham)}</td>`;
-                       htmlBeli += `</tr>`;
-                       }     
-                       $("#transaksiBeli").html(htmlBeli) 
-                },
-                error :function(){
-                    alert("Error");
-                }
-            });
-        }
-        function getTransaksiJual(){
-            var $id = "<?php echo $id ?>";
-            $.ajax({
-                type : "POST",
-                url  : "<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/GetVTransaksiJual/'.$id)?>",
-                dataType : "JSON",
-                cache:false,
-                success: function(response){
-                       var htmlJual ="";
-                       for(i=0;i<response.getDataJual.dataJual.length;i++){
-                       var data = response.getDataJual.dataJual[i];
-                       htmlJual += `<tr>`;
-                       htmlJual += `<td>${numberWithDot(data.order_saham)}</td>`;
-                       htmlJual += `<td>${numberWithDot(data.lembar_saham)}</td>`;
-                       htmlJual += `<td>${numberWithDot(data.harga_saham)}</td>`;
-                       htmlJual += `</tr>`;
-                       }     
-                       $("#transaksiJual").html(htmlJual) 
-                },
-                error :function(){
-                    alert("Error");
-                }
-            });
-        }
         function numberWithDot(x ="") {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
-        function modalBeli()
-        {
-            document.getElementById("txtBeliSaham").disabled = false;
-            $("#modal-beli").modal("show");
+        function getTableHistory(){
+        	var url = '<?php echo base_url("/transaksi/Transaksi_Antar_Pemodal_Detail_Histori/GetTb_Transaksi_Jual_Beli/".$id) ?>';
+        	$.ajax({
+				url: url,		
+				dataType:"JSON",
+				success: function(respon){
+					console.log('Data = ',respon.data);
+					var html = "";
+					for(var i=0;i < respon.data.dataTransaksi.length;i++){
+						var getData = respon.data.dataTransaksi[i];
+						html += `<tr>`;	
+						html += `<td>${getData.create_date = getData.create_date == null ? "" : getData.create_date}</td>`;	
+						html += `<td>${getData.keterangan}</td>`;	
+						html += `<td>${getData.harga_saham}</td>`;	
+						html += `<td>${getData.lembar_saham}</td>`;	
+						html += `<td>${getData.status}</td>`;	
+						html += `<td><button type="button" class="btn btn-pink btn-sm">Batalkan</button></td>`;	
+						html += `</tr>`;	
+					}
+					$("#tableHistory").html(html);
+				},
+				error: function(){alert("getTableHistory Error")}        		
+        	});
         }
-        function modalJual()
-        {
-            document.getElementById("txtJualSaham").disabled = false;
-            $("#modal-jual").modal("show");   
-        }
-        function beliSaham()
-        {
-            document.getElementById("txtBeliSaham").disabled = true;
-            var lembarSaham = $("#lembarSaham").val();            
-            var id = "<?php echo $id ?>";
-            var harga_per_lembar = "<?php echo $harga_per_lembar ?>";
-            $.ajax({
-                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/AddTransaksiJualBeli_beli')?>",
-                type:"POST",
-                dataType:"JSON",
-                data:{
-                    id:id,
-                    lembarSaham : lembarSaham,
-                    keterangan : "beli",
-                    hargaSaham: $("#hargaSaham").val()
-                },
-                success:function(respon){
-                    clearBeli();
-                    $("#modal-beli").modal("hide");
-                    toastrshow("success", "Data Berhasil Disimpan", "success");
-                    $("#lembarSaham").val("");
-                    totalInvestasiJual();
-                },
-                error:function(){alert("Error Beli Saham")}
-
-            });
-        }
-        function jualSaham()
-        {
-            document.getElementById("txtJualSaham").disabled = true;
-            var lembarSahamJual = $("#lembarSahamJual").val();
-            var keterangan = "jual";
-            var id = "<?php echo $id ?>";            
-            var hargaSahamJual = $("#hargaSahamJual").val();
-            $.ajax({
-                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/AddTransaksiJualBeli_jual')?>",
-                type:"POST",
-                dataType:"JSON",
-                data:{
-                    id:id,
-                    lembarSahamJual : lembarSahamJual,
-                    keterangan : keterangan,
-                    hargaSahamJual: hargaSahamJual
-                },
-                success:function(respon){
-                    $("#modal-jual").modal("hide");
-                    toastrshow("success", "Data Berhasil Disimpan", "success");
-                    $("#lembarSahamJual").val("");
-                    totalInvestasiJual();
-                    clearJual();
-                },
-                error:function(){alert("Error Beli Saham")}
-
-            });
-        }
-        function HargaWajar()
+ 		function HargaWajar()
         {
             var $id = "<?php echo $id ?>";
             $.ajax({
                 dataType:"JSON",              
                 url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/HargaWajar/'.$id)?>",
                 success:function(respon){
-                    /*var total = respon.getHargaWajar.defaulHarga[0].harga_per_lembar;
-                    if(respon.getHargaWajar.harga_per_lembar[0].harga_saham != null){
-                    var harga_per_lembar = respon.getHargaWajar.harga_per_lembar[0].harga_saham; 
-                    var countharga_per_lembar = respon.getHargaWajar.lembar_saham_beli;
-                    total =  (harga_per_lembar / countharga_per_lembar);
-                    }*/
+     
                    $("#txtHargaWajar").html(numberWithDot(respon.getHargaWajar.defaulHarga[0].harga_per_lembar));
                 },
                 error:function(){alert("Error Harga Wajar")}
             });
         }
-        function totalInvestasiJual()
-        {
-            var $id = "<?php echo $id ?>";
-            $.ajax({
-                dataType:"JSON",              
-                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/totalInvestasiJual/'.$id)?>",
-                success:function(respon){
-                   
-                  // var totalInves = respon.totalInvestasi.totalInvestasiFromViewBeli[0].jumlah_saham;   
-                   var sahamSaya = respon.totalInvestasi.sahamYangSayaPunya[0].lembar_saham;
-                  // var kurangTotalInvest = respon.totalInvestasi.kurangi_total[0].jumlah_saham;
-                   var kurangSaham = respon.totalInvestasi.kurangi_sahamsaya[0].lembar_saham;
-                   
-                   //var totalInvesiJual = totalInves - kurangTotalInvest;
-                   
-                   var totalSahamSaya = sahamSaya - kurangSaham;  
-                   
-                   $("#txtSahamSaya").val(numberWithDot(totalSahamSaya));
-                },
-                error:function(){alert("Error Total Investasi")}
-            });
-        }
-        //$("#txtTotalInvestasi").val(numberWithDot(totalInvesiJual));
-        $("#hargaSahamJual").on("input", function () {
-          rumusTotalInvestasi();  
-        });
-        $("#lembarSahamJual").on("input", function () {
-          rumusTotalInvestasi();  
-        });
-        function rumusTotalInvestasi(){
-                 
-            var totalInvesiJual = $("#lembarSahamJual").val() * $("#hargaSahamJual").val();
-           $("#txtTotalInvestasi").val(numberWithDot(totalInvesiJual));
-        }  
         </script>
         <script type="text/javascript" src="<?php echo base_url("assets/js/moment.min.js"); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url("assets/js/jquery-2.1.1.js"); ?>"></script>
