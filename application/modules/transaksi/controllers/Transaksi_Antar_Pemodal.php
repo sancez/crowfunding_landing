@@ -15,18 +15,5 @@ class Transaksi_Antar_Pemodal extends MY_Controller
 		$this->load->view("transaksi/Transaksi_Antar_Pemodal",$data);
 	}
 
-	/*public function Detail($id)
-	{
-		$this->load->view("transaksi/Transaksi_Antar_Pemodal_Detail");
-	}*/
-	/*public function GetProperti()
-	{
-		$dataProperti = $this->db->select('*')
-						->limit(1)
-						->get("tb_properti")->result();
-		$data = [
-			"properti"=> $dataProperti
-		];
-        echo json_encode(["get_Datas" => $data]);
-	}*/
+	
 }

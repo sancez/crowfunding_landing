@@ -211,6 +211,40 @@
                                             }
                                          ?>
                                        
+                                     <?php  
+                                        $id = $item->id;
+                                 //       $getSumHargaSaham = $this->db->query("select sum(harga_saham) as harga_saham from v_transaksi_beli 
+                                 //           where id_properti = '$id'")->result();
+                                        /*$getSumHargaSaham = $this->db->select_sum('harga_saham as harga_saham' )
+                                                
+                                        ->where('keterangan','beli')        
+                                        ->where('id_properti',$id)
+                                        ->get('v_transaksi_beli')->result();*/
+
+                                ///        $getCountHargaSaham = count($this->db->select('*')      
+                                ///        ->where('keterangan','beli')        
+                                ///        ->where('id_properti',$id)
+                                //        ->get('v_transaksi_beli')->result());
+
+                                 //       $defaulHarga =  $this->db->select('harga_per_lembar')
+                                 //       ->where('id',$id)
+                                 //       ->get('tb_properti')->result();
+
+                                       // print_r($getSumHargaSaham);
+                                  //       $total = $item->harga_per_lembar; 
+                                 //        if($getSumHargaSaham != null){ 
+                                  //         $total = $getSumHargaSaham[0]->harga_saham /  $getCountHargaSaham;
+                                   //      }
+/*                                        $total = $defaulHarga->harga_per_lembar;*/
+                                           /* if($getSumHargaSaham->harga_saham != null){
+                                            $harga_per_lembar = $getSumHargaSaham->harga_saham; 
+                                            $countharga_per_lembar = $getCountHargaSaham;
+                                            $total =  ($harga_per_lembar / $countharga_per_lembar);
+                                            }*/
+                                          /* $("#txtHargaWajar").html(numberWithDot(total));*/
+
+                                     ?>
+
                                     	<div class="a mb-3" style="margin-left:2.5%;width: 30%;height: 380px;background: #eaeaea;float: left;">
                                     			<div class="a1" style="width: 100%;height: 220px;">                                    				
                                                 <img src="<?php echo $foto; ?>" style="width:100%;height:100;">
@@ -220,13 +254,13 @@
                                     			</div>
                                     			<div class="a3" style="width: 100%;height: 65px;background: ;">
                                     				<div class="a31" style="width:50%;height: 100%;background: ;float: left;">
-                                    					<p style="margin-left:15px;font-size:13px;margin-top: 1px;">Type Aset</p>
-                                    					<p style="margin-left:15px;font-size: 13px;margin-top: 3px;">Harga Perlembar </p>
+                                    					<p style="margin-left:15px;font-size:13px;margin-top: 1px;">Harga Saham Awal</p>
+                                    					<p style="margin-left:15px;font-size: 13px;margin-top: 3px;">9000 </p>
                                     				</div>
                                     				<div class="a31" style="width:50%;height: 100%;background: ;float: left;">
-                                    					<p style="margin-left:7px;font-size:13px;margin-top: 1px;"><!-- Harga Rumah Jakarta --><?php echo $item->tipe_aset ?></p>
+                                    					<p style="margin-left:7px;font-size:13px;margin-top: 1px;"><!-- Harga Rumah Jakarta -->Harga Saham Wajar</p>
                                     					<p style="margin-left:7px;font-size: 13px;margin-top: 3px;"><!-- 1,500 -->
-                                                        Rp <?php echo number_format($item->harga_per_lembar,0,',','.') ?>               
+                                                         <?php echo number_format($item->harga_per_lembar,0,',','.') ?>               
                                                         </p>
                                     				</div>
                                     			</div>

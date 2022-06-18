@@ -102,7 +102,7 @@
                 white-space: normal !important;
             }
             .transaksi{
-                margin-top:  100px;     
+            	margin-top:  100px;   	
             }
         </style>
     </head>
@@ -117,7 +117,7 @@
             <div id="main" class="main">
                 <div class="home">
                      <div class="container container-custom">
-                        <div class="row mb-4 ml-0 mr-0">                        
+                        <div class="row mb-4 ml-0 mr-0">                       	
                           
                         </div>
                     </div> 
@@ -163,13 +163,13 @@
                                                     </div>
                                                     <?php endforeach ?>
                                                     <?php  echo anchor('/transaksi/Transaksi_Antar_Pemodal_Detail/Detail/'.$id,'
-                                                        <div class="a2 active" style="width:32%;height: 100px;background: ;float: left;">
+                                                    	<div class="a2 " style="width:32%;height: 100px;background: ;float: left;">
                                                         <center><img style="margin-top: 15px;height: 45px;" src='.base_url("assets/icons/transaksiexchange%20Money.png") .'></center>
                                                         <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Transaksi Saham</p></center>
                                                     </div>
                                                     '); ?>
                                                     <?php echo anchor('/transaksi/Transaksi_Antar_Pemodal_Detail_Histori/Detail/'.$id,'
-                                                        <div class="a2 " style="width:32%;height: 100px;background: ;float: left;border-left:1px solid black;border-right: 1px solid black">
+                                                        <div class="a2 active" style="width:32%;height: 100px;background: ;float: left;border-left:1px solid black;border-right: 1px solid black">
                                                         <center><i class="las la-business-time" style="font-size: 45px;color: black;margin-top: 15px;"></i></center>
                                                         <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Histori Saham</p></center>
                                                          </div>
@@ -315,11 +315,11 @@
                                     </div>
                                     <div class="bodyTransaksi">
                                    
-                                        
-                                        
+                                    	
+                                    	
 
 
-                                        
+                      					
 
                                     </div>
                                   
@@ -447,12 +447,12 @@
                 </ul>
             </div> -->
             <div class="offset-md-3 col-md-6 text-center pt-3">
-                <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-facebook text-primary"></i></a>
-                <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-twitter text-primary"></i></a>
-                <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-instagram text-primary"></i></a>
-                <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-whatsapp text-primary"></i></a>
-                <br>
-                <h6 class="text-white mt-3"><a class="text-white" href="">Kebijakan &amp; Privasi</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a class="text-white" href="">Syarat &amp; Ketentuan</a></h6><br>
+		        <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-facebook text-primary"></i></a>
+		        <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-twitter text-primary"></i></a>
+		        <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-instagram text-primary"></i></a>
+		        <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-whatsapp text-primary"></i></a>
+		        <br>
+            	<h6 class="text-white mt-3"><a class="text-white" href="">Kebijakan &amp; Privasi</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a class="text-white" href="">Syarat &amp; Ketentuan</a></h6><br>
                 <h6 class="mt-3 text-white">© 2021 Obsido</h6>
                 <br><br>
             </div>
