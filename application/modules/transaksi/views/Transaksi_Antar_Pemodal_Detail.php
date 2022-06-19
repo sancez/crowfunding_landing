@@ -564,7 +564,7 @@
             });
         }
         var arrJual = [{Id:0, lembar_saham : 0}];
-        var arrBeli = [];
+        var arrBeli = [{Id:0, lembar_saham : 0}];
         function ConvertBuySell(){
             var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertBuySell') ?>';
             $.ajax({
@@ -575,48 +575,66 @@
                     var beli = respon.ConvertSellBuy.beli;
                     var jual = respon.ConvertSellBuy.jual;
 
-                        for(var z=0;z< jual.length;z++)
+                for(var z=0;z< jual.length;z++)
+                {
+                    if(beli[0].harga_saham == jual[z].harga_saham)
+                    {
+                        
+
+                        if(parseInt(beli[0].lembar_saham) > parseInt(jual[z].lembar_saham) )
                         {
-                            if(beli[0].harga_saham == jual[z].harga_saham)
-                            {
-                                
-
-                                if(beli[0].lembar_saham > jual[z].lembar_saham )
-                                {
-                                   
-                                   var objJual = {Id:jual[z].id, lembar_saham : jual[z].lembar_saham}
-                                   var cekArrJual = arrJual.find(x => x.Id == jual[z].id)                                    
-                                    if (!cekArrJual){
-                                      arrJual.push(objJual);
-                                    }
-                                    //console.log(arrJual);
-                                    //1 bacause 0 being add default
-                                    for(var q=1;q<arrJual.length;q++){
-                                          
-                                        //3 & // 4
-                                        if(beli[0].lembar_saham >= arrJual[q].lembar_saham){
-                                            
-                                            UpdateConvertBuySell(arrJual[q].Id);    
-                                        } 
-                                        arrJual[q].lembar_saham = parseInt(arrJual[q].lembar_saham) + parseInt(arrJual[q].lembar_saham);
-                                    }
-                                    UpdateConvertBuySell(beli[0].id);
-                                    
-                                }
-
-                                else if(beli[0].lembar_saham == jual[z].lembar_saham)
-                                {
-                                    UpdateConvertBuySell(beli[0].id);
-                                    UpdateConvertBuySell(jual[z].id);
-                                   
-                                }
-                                
+                      
+                           var objJual = {Id:jual[z].id, lembar_saham : jual[z].lembar_saham}
+                           var cekArrJual = arrJual.find(x => x.Id == jual[z].id)                                    
+                            if (!cekArrJual){
+                              arrJual.push(objJual);
                             }
-
+                            //console.log(arrJual);
+                            //1 bacause 0 being add default
+                            for(var q=1;q<arrJual.length;q++){
+                                  
+                                //3 & // 4
+                                if(parseInt(beli[0].lembar_saham) >= parseInt(arrJual[q].lembar_saham)){
+                                    
+                             UpdateConvertBuySell(arrJual[q].Id);    
+                                } 
+                                parseInt(arrJual[q].lembar_saham) = parseInt(arrJual[q].lembar_saham) + parseInt(arrJual[q].lembar_saham);
+                            }
+                            UpdateConvertBuySell(beli[0].id);
+                            
                         }
 
-                    for(var x = 0; x < beli.length;x++){
+                        else if(parseInt(beli[0].lembar_saham) == parseInt(jual[z].lembar_saham))
+                        {
+                            UpdateConvertBuySell(beli[0].id);
+                            UpdateConvertBuySell(jual[z].id);                                   
+                        }
+                       /* else if(beli[0].lembar_saham < jual[z].lembar_saham)
+                        {
+                            for(var i=0;i<beli.length;i++){
+                            var objBeli = {Id:beli[i].id, lembar_saham : beli[i].lembar_saham}
+                            var cekArrBeli = arrBeli.find(x => x.Id == beli[i].id)                                    
+                            if (!cekArrBeli){
+                              arrBeli.push(objBeli);
+                            }
+                                  
+                                //3 & // 4
+                                if(jual[z].lembar_saham >= arrBeli[q].lembar_saham){
+                                    console.log(arrBeli[q].lembar_saham);
+                                    //UpdateConvertBuySell(arrBeli[q].Id);    
+                                } 
+                                arrBeli[q].lembar_saham = parseInt(arrBeli[q].lembar_saham) + parseInt(arrBeli[q].lembar_saham);
+                            
+                            //UpdateConvertBuySell(beli[0].id);
+                          }
+                        }*/
+                        
                     }
+
+                }
+
+                for(var x = 0; x < beli.length;x++){
+                }
 
 
                 },
