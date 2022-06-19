@@ -46,6 +46,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		$getData = $this->db->select_sum('lembar_saham')
 		->select_sum('order_saham')
 		->select('harga_saham')
+		->where('status !=','match')
 		->where('keterangan','beli')
 		->where('id_properti',$id)
 		->group_by('harga_saham')
@@ -64,6 +65,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		$getData = $this->db->select_sum('lembar_saham')
 		->select_sum('order_saham')
 		->select('harga_saham')
+		->where('status !=','match')
 		->where('id_properti',$id)
 		->where('keterangan','jual')
 		->group_by('harga_saham')
@@ -88,7 +90,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 			'lembar_saham' => $lembarSaham,
 			'harga_saham' => $hargaSaham, 
 			'order_saham' => 1, 
-			'status' => "pending", 
+			'status' => "Pending", 
 			'keterangan' => $keterangan,
 			'create_date' => date('Y-m-d H:i:s'),
 			'modified_date' => date('Y-m-d H:i:s')
@@ -148,5 +150,44 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		];
 		echo json_encode(["totalInvestasi" => $result]);
 	}
+
+	public function ConvertBuySell()
+	{
+		$beli = $this->db->select('*')
+		->where('keterangan','beli')
+		->where('status !=','Match')
+		->order_by("create_date","asc")	
+		->get('v_transaksi_beli')
+		->result();
+
+		$jual = $this->db->select('*')		
+		->where('keterangan','jual')
+		->where('status !=','Match')
+		->order_by("create_date","asc")		
+		->get('v_transaksi_jual')
+		->result();
+
+		$result = [
+			"beli" => $beli,
+			"jual" => $jual
+		];
+		echo json_encode(["ConvertSellBuy" => $result]);
+	}
+
+	public function UpdateConvertBuySell()
+	{
+		$id_tb_transaksi_jual_beli = $this->input->post("Id");
+		$this->db->query("update tb_transaksi_jual_beli set status = 'Match' where id = '$id_tb_transaksi_jual_beli'");
+		$result = $this->db->query("select * from tb_transaksi_jual_beli where status = 'Match' and id = '$id_tb_transaksi_jual_beli'")->result();
+		$result = count($result);
+		if($result == 0){
+			$result = "Update Failed";			
+		}else{
+			$result = "Update Success";
+		}
+
+		echo json_encode(["UpdateConvertBuySell" => $result]);			
+	}
+
 
 }

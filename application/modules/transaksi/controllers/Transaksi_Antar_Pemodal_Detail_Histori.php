@@ -21,6 +21,7 @@ class Transaksi_Antar_Pemodal_Detail_Histori extends MY_Controller
 	public function GetTb_Transaksi_Jual_Beli($id)
 	{
 		$data = $this->db->select("*")
+			->limit(20)
 			->where("id_properti",$id)
 			->where("email",$this->session->userdata("user")->email)
 			->order_by("create_date","desc")
