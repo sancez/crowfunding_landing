@@ -476,8 +476,9 @@
             totalInvestasiJual();
             var sisaSaldo = <?php echo $this->session->userdata("user")->saldo ?>; 
             $("#sisaSaldo").val(numberWithDot(sisaSaldo));
-          
+            convertBuySell();
         });
+
         $("#lembarSaham").on("input", function () {
           rumusTotalAndSisaSaldo();  
         });
@@ -559,6 +560,12 @@
                     alert("Error");
                 }
             });
+        }
+
+        function convertBuySell(){
+            $.ajax({
+                
+            });    
         }
         function numberWithDot(x ="") {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");

@@ -111,7 +111,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 			'lembar_saham' => $lembarSahamJual,
 			'harga_saham' => $hargaSahamJual, 
 			'order_saham' => 1, 
-			'status' => "success", 
+			'status' => "Parsial Match", 
 			'keterangan' => $keterangan,
 			'create_date' => date('Y-m-d H:i:s'),
 			'modified_date' => date('Y-m-d H:i:s') 
