@@ -43,10 +43,11 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 	public function GetTransaksiBeli($id)
 	{
 		/*$getData = $this->db->query("select count('lembar_saham') as lembar_saham,jumlah_saham,harga_saham from v_transaksi_beli where keterangan = 'beli' group by id_properti ")->result();*/
-		$getData = $this->db->select_sum('lembar_saham')
-		->select_sum('order_saham')
+		$getData = $this->db->select_sum('order_saham')
+		->select_sum('convert_lembar_saham')
 		->select('harga_saham')
 		->where('status !=','match')
+		->where('convert_lembar_saham !=',0)
 		->where('keterangan','beli')
 		->where('id_properti',$id)
 		->group_by('harga_saham')
@@ -62,10 +63,11 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 	public function GetVTransaksiJual($id)
 	{
 		/*$getData = $this->db->query("select count('lembar_saham') as lembar_saham,jumlah_saham,harga_saham from v_transaksi_beli where keterangan = 'beli' group by id_properti ")->result();*/
-		$getData = $this->db->select_sum('lembar_saham')
-		->select_sum('order_saham')
+		$getData = $this->db->select_sum('order_saham')
+		->select_sum('convert_lembar_saham')
 		->select('harga_saham')
 		->where('status !=','match')
+		->where('convert_lembar_saham !=',0)
 		->where('id_properti',$id)
 		->where('keterangan','jual')
 		->group_by('harga_saham')
@@ -93,15 +95,58 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 			'status' => "Pending", 
 			'keterangan' => $keterangan,
 			'create_date' => date('Y-m-d H:i:s'),
-			'modified_date' => date('Y-m-d H:i:s')
+			'modified_date' => date('Y-m-d H:i:s'),
+			'convert_lembar_saham' => $lembarSaham
 
 		);		
 		$result = $this->db->insert('tb_transaksi_jual_beli',$data);
 		echo json_encode(["data" => $result]);
 	}
+	public function ConvertBuy()
+	{
+		$email = $this->session->userdata('user')->email;
+		$jual = $this->db->select('*')
+		->select("id")
+		->select("convert_lembar_saham")
+		->where('keterangan','jual')
+		->where('status !=','Match')
+		->where('convert_lembar_saham !=',0)
+		->where('email !=',$email)
+		->order_by("create_date","asc")	
+		->get('v_transaksi_jual')
+		->result();
+
+		$result = [
+			"jual" => $jual			
+		];
+		echo json_encode(["ConvertBuy" => $result]);
+	}
+	//Waktu Press Beli dan update tb jual(status)
+	public function UpdateJual()
+	{
+		$email = $this->session->userdata('user')->email;
+		$id = $this->input->post("Id");
+		$convert_lembar_saham = $this->input->post("convert_lembar_saham");
+
+		$query = $this->db->query("update tb_transaksi_jual_beli set status = 'Pending',convert_lembar_saham = '$convert_lembar_saham' where id = '$id' and email != '$email'");
+		if($convert_lembar_saham == 0){
+			$this->db->query("update tb_transaksi_jual_beli set status = 'Match' where id = '$id' and email != '$email'");
+		}
+		if($convert_lembar_saham != 0){
+			$this->db->query("update tb_transaksi_jual_beli set status = 'Partial Match' where id = '$id' and email != '$email'");
+		}
+		$result = [
+			"email" => $email,
+			"id" => $id,
+			"convert_lembar_saham" => $convert_lembar_saham,
+			"query" => $query
+		];
+		echo json_encode(["ConvertSell" => $result]);
+	}
 	public function AddTransaksiJualBeli_jual()
 	{
 		date_default_timezone_set('asia/jakarta');
+		$email = $this->session->userdata('user')->email;
 		$id =  $this->input->post('id');		
 		$lembarSahamJual =  $this->input->post('lembarSahamJual');		
 		$keterangan =  $this->input->post('keterangan');
@@ -113,72 +158,86 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 			'lembar_saham' => $lembarSahamJual,
 			'harga_saham' => $hargaSahamJual, 
 			'order_saham' => 1, 
-			'status' => "Parsial Match", 
+			'status' => "Pending", 
 			'keterangan' => $keterangan,
 			'create_date' => date('Y-m-d H:i:s'),
-			'modified_date' => date('Y-m-d H:i:s') 
-		);		
+			'modified_date' => date('Y-m-d H:i:s'),
+			'convert_lembar_saham' => $lembarSahamJual 
+		);
+
 		$result = $this->db->insert('tb_transaksi_jual_beli',$data);
 		echo json_encode(["data" => $result]);
 	}
+	public function ConvertSell()
+	{
+		$email = $this->session->userdata('user')->email;
+		$beli = $this->db->select('*')
+		->select("id")
+		->select("convert_lembar_saham")
+		->where('keterangan','beli')
+		->where('status !=','Match')
+		->where('convert_lembar_saham !=',0)
+		->where('email',$email)
+		->order_by("harga_saham","asc")	
+		->get('v_transaksi_beli')
+		->result();
+
+		$result = [
+			"beli" => $beli			
+		];
+		echo json_encode(["ConvertSell" => $result]);
+	}
+	//waktu press jual dan update tb beli(status)
+	public function UpdateBeli()
+	{
+		$email = $this->session->userdata('user')->email;
+		$id = $this->input->post("Id");
+		$convert_lembar_saham = $this->input->post("convert_lembar_saham");
+
+		$query = $this->db->query("update tb_transaksi_jual_beli set status = 'Pending',convert_lembar_saham = '$convert_lembar_saham' where id = '$id' and email = '$email'");
+		if($convert_lembar_saham == 0){
+			$this->db->query("update tb_transaksi_jual_beli set status = 'Match' where id = '$id' and email = '$email'");
+		}
+		if($convert_lembar_saham != 0){
+			$this->db->query("update tb_transaksi_jual_beli set status = 'Partial Match' where id = '$id' and email = '$email'");
+		}
+		$result = [
+			"email" => $email,
+			"id" => $id,
+			"convert_lembar_saham" => $convert_lembar_saham,
+			"query" => $query
+		];
+		echo json_encode(["ConvertSell" => $result]);
+	}
+	
 	public function totalInvestasiJual($id)
 	{
 		$email = $this->session->userdata('user')->email;
-		//$getBeli = $this->db->select_sum('order_saham')
-		////->where('email',$email)
-		//->where('id_properti',$id)
-		//->get('v_transaksi_beli')->result();
-		$sahamYangSayaPunya = $this->db->select_sum('lembar_saham')
+	
+		$sumBeli = $this->db->select_sum('convert_lembar_saham')
 		->where('email',$email)
 		->where('id_properti',$id)
 		->get('v_transaksi_beli')->result();
 
-		//$kurangi_total = $this->db->select_sum('order_saham')
-		//->where('email',$email)
-		//->where('id_properti',$id)
-		//->get('v_transaksi_jual')->result();
-		$kurangi_sahamsaya =  $this->db->select_sum('lembar_saham')
+
+		/*$kurangi_sahamsaya =  $this->db->select_sum('convert_lembar_saham')
 		->where('email',$email)
 		->where('id_properti',$id)
-		->get('v_transaksi_jual')->result();
+		->get('v_transaksi_jual')->result();*/
 
 		$result = [
-			//"totalInvestasiFromViewBeli" => $getBeli,
-			"sahamYangSayaPunya" => $sahamYangSayaPunya,
-			//"kurangi_total" => $kurangi_total,
-			"kurangi_sahamsaya" => $kurangi_sahamsaya 
+			"sumBeli" => $sumBeli
 		];
 		echo json_encode(["totalInvestasi" => $result]);
 	}
 
-	public function ConvertBuySell()
+	
+	/*public function UpdateConvertSell()
 	{
-		$beli = $this->db->select('*')
-		->where('keterangan','beli')
-		->where('status !=','Match')
-		->order_by("create_date","asc")	
-		->get('v_transaksi_beli')
-		->result();
-
-		$jual = $this->db->select('*')		
-		->where('keterangan','jual')
-		->where('status !=','Match')
-		->order_by("create_date","asc")		
-		->get('v_transaksi_jual')
-		->result();
-
-		$result = [
-			"beli" => $beli,
-			"jual" => $jual
-		];
-		echo json_encode(["ConvertSellBuy" => $result]);
-	}
-
-	public function UpdateConvertBuySell()
-	{
+		$email = $this->session->userdata('user')->email;
 		$id_tb_transaksi_jual_beli = $this->input->post("Id");
-		$this->db->query("update tb_transaksi_jual_beli set status = 'Match' where id = '$id_tb_transaksi_jual_beli'");
-		$result = $this->db->query("select * from tb_transaksi_jual_beli where status = 'Match' and id = '$id_tb_transaksi_jual_beli'")->result();
+		$this->db->query("update tb_transaksi_jual_beli set status = 'Pending',convert_sell_buy =  where id = '$id_tb_transaksi_jual_beli' and email == '$email'");
+		$result = $this->db->query("select * from tb_transaksi_jual_beli where status = 'Match' and id = '$id_tb_transaksi_jual_beli' and email != '$email' ")->result();
 		$result = count($result);
 		if($result == 0){
 			$result = "Update Failed";			
@@ -187,7 +246,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		}
 
 		echo json_encode(["UpdateConvertBuySell" => $result]);			
-	}
+	}*/
 
 
 }

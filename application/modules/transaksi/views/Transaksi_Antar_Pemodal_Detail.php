@@ -357,7 +357,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label text-dark">Saham Yang Saya Punya</label>
-                                <input id="txtSahamSaya" required type="text" class="form-control nominal text-right" id="nominalPembayaran" placeholder="" maxlength="19" name="form[nominal]" onkeypress="return validatedata(event);" style="height: 38px;" disabled>
+                                <input id="txtSahamSaya" required type="text" class="form-control nominal text-right" placeholder="" maxlength="19" name="form[nominal]" onkeypress="return validatedata(event);" style="height: 38px;" disabled>
                             </div>
                            
                             <div class="form-group">
@@ -513,7 +513,7 @@
         setInterval(getTransaksiBeli,1000);
         setInterval(getTransaksiJual,1000);
         setInterval(HargaWajar,3000);
-        setInterval(ConvertBuySell,3000);
+        //setInterval(ConvertBuySell,3000);
         function getTransaksiBeli(){
             var $id = "<?php echo $id ?>";
             $.ajax({
@@ -528,7 +528,7 @@
                        var data = response.getDataBeli.dataBeli[i];
                        htmlBeli += `<tr>`;
                        htmlBeli += `<td>${numberWithDot(data.order_saham)}</td>`;
-                       htmlBeli += `<td>${numberWithDot(data.lembar_saham)}</td>`;
+                       htmlBeli += `<td>${numberWithDot(data.convert_lembar_saham)}</td>`;
                        htmlBeli += `<td>${numberWithDot(data.harga_saham)}</td>`;
                        htmlBeli += `</tr>`;
                        }     
@@ -552,7 +552,7 @@
                        var data = response.getDataJual.dataJual[i];
                        htmlJual += `<tr>`;
                        htmlJual += `<td>${numberWithDot(data.order_saham)}</td>`;
-                       htmlJual += `<td>${numberWithDot(data.lembar_saham)}</td>`;
+                       htmlJual += `<td>${numberWithDot(data.convert_lembar_saham)}</td>`;
                        htmlJual += `<td>${numberWithDot(data.harga_saham)}</td>`;
                        htmlJual += `</tr>`;
                        }     
@@ -565,86 +565,12 @@
         }
         var arrJual = [{Id:0, lembar_saham : 0}];
         var arrBeli = [{Id:0, lembar_saham : 0}];
-        function ConvertBuySell(){
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertBuySell') ?>';
-            $.ajax({
-                url: url,
-                dataType:"Json",
-                success:function(respon){
-                  
-                    var beli = respon.ConvertSellBuy.beli;
-                    var jual = respon.ConvertSellBuy.jual;
-
-                for(var z=0;z< jual.length;z++)
-                {
-                    if(beli[0].harga_saham == jual[z].harga_saham)
-                    {
-                        
-
-                        if(parseInt(beli[0].lembar_saham) > parseInt(jual[z].lembar_saham) )
-                        {
-                      
-                           var objJual = {Id:jual[z].id, lembar_saham : jual[z].lembar_saham}
-                           var cekArrJual = arrJual.find(x => x.Id == jual[z].id)                                    
-                            if (!cekArrJual){
-                              arrJual.push(objJual);
-                            }
-                            //console.log(arrJual);
-                            //1 bacause 0 being add default
-                            for(var q=1;q<arrJual.length;q++){
-                                  
-                                //3 & // 4
-                                if(parseInt(beli[0].lembar_saham) >= parseInt(arrJual[q].lembar_saham)){
-                                    
-                             UpdateConvertBuySell(arrJual[q].Id);    
-                                } 
-                                parseInt(arrJual[q].lembar_saham) = parseInt(arrJual[q].lembar_saham) + parseInt(arrJual[q].lembar_saham);
-                            }
-                            UpdateConvertBuySell(beli[0].id);
-                            
-                        }
-
-                        else if(parseInt(beli[0].lembar_saham) == parseInt(jual[z].lembar_saham))
-                        {
-                            UpdateConvertBuySell(beli[0].id);
-                            UpdateConvertBuySell(jual[z].id);                                   
-                        }
-                       /* else if(beli[0].lembar_saham < jual[z].lembar_saham)
-                        {
-                            for(var i=0;i<beli.length;i++){
-                            var objBeli = {Id:beli[i].id, lembar_saham : beli[i].lembar_saham}
-                            var cekArrBeli = arrBeli.find(x => x.Id == beli[i].id)                                    
-                            if (!cekArrBeli){
-                              arrBeli.push(objBeli);
-                            }
-                                  
-                                //3 & // 4
-                                if(jual[z].lembar_saham >= arrBeli[q].lembar_saham){
-                                    console.log(arrBeli[q].lembar_saham);
-                                    //UpdateConvertBuySell(arrBeli[q].Id);    
-                                } 
-                                arrBeli[q].lembar_saham = parseInt(arrBeli[q].lembar_saham) + parseInt(arrBeli[q].lembar_saham);
-                            
-                            //UpdateConvertBuySell(beli[0].id);
-                          }
-                        }*/
-                        
-                    }
-
-                }
-
-                for(var x = 0; x < beli.length;x++){
-                }
-
-
-                },
-                error:function(){alert("ConvertBuySell Error")}
-            });    
-        }
-        function UpdateConvertBuySell(id_tb_transaksi_jual_beli){
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateConvertBuySell') ?>';
+        
+        function UpdateConvertSell(id_tb_transaksi_jual_beli,convert_lembar_saham){
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateConvertSell') ?>';
             var data = {
-                Id : id_tb_transaksi_jual_beli
+                Id : id_tb_transaksi_jual_beli,
+                convert_lembar_saham : convert_lembar_saham
             }
             $.ajax({
                 url :url,
@@ -652,9 +578,9 @@
                 data:data,
                 dataType:"Json",
                 success:function(respon){
-                    console.log(respon)
+                    
                 },
-                error:function(){alert("UpdateConvertBuySell Error")}
+                error:function(){alert("UpdateConvertSell Error")}
             });
         }
         function numberWithDot(x ="") {
@@ -690,6 +616,7 @@
                     hargaSaham: $("#hargaSaham").val()
                 },
                 success:function(respon){
+                    ConvertBuy(lembarSaham);
                     clearBeli();
                     $("#modal-beli").modal("hide");
                     toastrshow("success", "Data Berhasil Disimpan", "success");
@@ -704,14 +631,64 @@
 
             });
         }
+        function ConvertBuy(lembarSahamBeli)
+        {
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertBuy') ?>';
+            $.ajax({
+                url: url,
+                dataType:"Json",
+                success:function(respon){                  
+                    var jual = respon.ConvertBuy.jual;
+                    for(var i=0;i<jual.length;i++){
+                        if(lembarSahamBeli>0){
+                            console.log(jual[i].id);
+                            UpdateJual(jual[i].id,0);
+                            lembarSahamBeli = lembarSahamBeli - jual[i].convert_lembar_saham 
+                            if(lembarSahamBeli<0){
+                                                                
+                                console.log(jual[i].id,Math.abs(lembarSahamBeli));
+                                UpdateJual(jual[i].id,Math.abs(lembarSahamBeli));
+                            }   
+                        }
+                        
+                        
+                    }
+
+
+                },
+                error:function(){alert("ConvertBuySell Error")}
+            });  
+        }
+
+        function UpdateJual(id_tb_transaksi_jual_beli,convert_lembar_saham){
+            
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateJual') ?>';
+            var data = {
+                Id : id_tb_transaksi_jual_beli,
+                convert_lembar_saham : convert_lembar_saham
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+               
+                },
+                error:function(){alert("UpdateJual Error")}
+            });
+        }
 
         function cekJualSaham(){
             var message = "";
+            if($("#lembarSahamJual").val()>$("#txtSahamSaya").val()){
+              message += "Lembar Saham Tidak Cukup \n";
+            }
             if($("#lembarSahamJual").val() == ""){
-              message += "Lembar Saham Kosong";
+              message += "Lembar Saham Kosong \n";
             }
             if($("#hargaSahamJual").val() == ""){
-              message += "Saham Jual Kosong";   
+              message += "Saham Jual Kosong \n";   
             }
             if(message == ""){
                 jualSaham();       
@@ -725,7 +702,7 @@
             var lembarSahamJual = $("#lembarSahamJual").val();
             var keterangan = "jual";
             var id = "<?php echo $id ?>";            
-            var hargaSahamJual = $("#hargaSahamJual").val();
+            var hargaSahamJual = $("#hargaSahamJual").val();            
             $.ajax({
                 url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/AddTransaksiJualBeli_jual')?>",
                 type:"POST",
@@ -736,19 +713,86 @@
                     keterangan : keterangan,
                     hargaSahamJual: hargaSahamJual
                 },
+                
                 success:function(respon){
+                    ConvertSell(lembarSahamJual);
                     $("#modal-jual").modal("hide");
                     toastrshow("success", "Data Berhasil Disimpan", "success");
                     $("#lembarSahamJual").val("");
                     totalInvestasiJual();
                     clearJual();
-                    document.getElementById("txtJualSaham").disabled = false;
+                    document.getElementById("txtJualSaham").disabled = false;           
                 },
                 error:function(){
                     alert("Error Beli Saham");
                     document.getElementById("txtJualSaham").disabled = false;
                 }
 
+            });
+        }
+   /*     var arrBeli = [0];*/
+        //Update Beli
+        function ConvertSell(lembarSahamJual){
+      /*      console.log(lembarSahamJual);*/
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertSell') ?>';
+            $.ajax({
+                url: url,
+                dataType:"Json",
+                success:function(respon){                  
+                    var beli = respon.ConvertSell.beli;
+                    for(var i=0;i<beli.length;i++){
+                        if(lembarSahamJual>0){
+                           console.log(beli[i].id);
+                            UpdateBeli(beli[i].id,0);
+                            lembarSahamJual = lembarSahamJual - beli[i].convert_lembar_saham 
+                            if(lembarSahamJual<0){
+                                
+                               console.log(beli[i].id,Math.abs(lembarSahamJual));
+                                UpdateBeli(beli[i].id,Math.abs(lembarSahamJual));
+                            }   
+                        }
+                        
+                        
+                    }
+
+
+                },
+                error:function(){alert("ConvertBuySell Error")}
+            });    
+        }
+        function UpdateBeli(id_tb_transaksi_jual_beli,convert_lembar_saham){
+            
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateBeli') ?>';
+            var data = {
+                Id : id_tb_transaksi_jual_beli,
+                convert_lembar_saham : convert_lembar_saham
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+               
+                },
+                error:function(){alert("UpdateBeli Error")}
+            });
+        }
+        function UpdateBeliPartialMatch(id_tb_transaksi_jual_beli,convert_lembar_saham){
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateBeliPartialMatch') ?>';
+            var data = {
+                Id : id_tb_transaksi_jual_beli,
+                convert_lembar_saham : convert_lembar_saham
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+                   
+                },
+                error:function(){alert("UpdateBeli Error")}
             });
         }
         function HargaWajar()
@@ -778,14 +822,11 @@
                 success:function(respon){
                    
                   // var totalInves = respon.totalInvestasi.totalInvestasiFromViewBeli[0].jumlah_saham;   
-                   var sahamSaya = respon.totalInvestasi.sahamYangSayaPunya[0].lembar_saham;
-                  // var kurangTotalInvest = respon.totalInvestasi.kurangi_total[0].jumlah_saham;
-                   var kurangSaham = respon.totalInvestasi.kurangi_sahamsaya[0].lembar_saham;
+                   var totalSahamSaya = respon.totalInvestasi.sumBeli[0].convert_lembar_saham;
                    
-                   //var totalInvesiJual = totalInves - kurangTotalInvest;
-                   
-                   var totalSahamSaya = sahamSaya - kurangSaham;  
-                   
+                   if(totalSahamSaya<0){
+                        totalSahamSaya = 0;
+                   }                     
                    $("#txtSahamSaya").val(numberWithDot(totalSahamSaya));
                 },
                 error:function(){alert("Error Total Investasi")}
