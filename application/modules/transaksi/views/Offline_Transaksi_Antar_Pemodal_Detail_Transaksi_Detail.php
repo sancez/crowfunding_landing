@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Obsido-Transaksi Detail</title>
+        <title>Obsido-Transaksi Detail Histori</title>
         <link rel="icon" href="<?php echo base_url("assets/icons/favicon.png"); ?>" type="image/png" sizes="16x16" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -102,7 +102,7 @@
                 white-space: normal !important;
             }
             .transaksi{
-                margin-top:  100px;     
+            	margin-top:  100px;   	
             }
         </style>
     </head>
@@ -117,7 +117,7 @@
             <div id="main" class="main">
                 <div class="home">
                      <div class="container container-custom">
-                        <div class="row mb-4 ml-0 mr-0">                        
+                        <div class="row mb-4 ml-0 mr-0">                       	
                           
                         </div>
                     </div> 
@@ -163,39 +163,25 @@
                                                     </div>
                                                     <?php endforeach ?>
                                                     <?php  echo anchor('/transaksi/Transaksi_Antar_Pemodal_Detail/Detail/'.$id,'
-                                                        <div class="a2 active" style="width:50%;height: 100px;background: ;float: left;">
+                                                    	<div class="a2 " style="width:32%;height: 100px;background: ;float: left;">
                                                         <center><img style="margin-top: 15px;height: 45px;" src='.base_url("assets/icons/transaksiexchange%20Money.png") .'></center>
                                                         <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Transaksi Saham</p></center>
                                                     </div>
                                                     '); ?>
                                                     <?php echo anchor('/transaksi/Transaksi_Antar_Pemodal_Detail_Histori/Detail/'.$id,'
-                                                        <div class="a2 " style="width:50%;height: 100px;background: ;float: left;border-left:1px solid black;border-right: ">
+                                                        <div class="a2" style="width:32%;height: 100px;background: ;float: left;border-left:1px solid black;border-right: 1px solid black">
                                                         <center><i class="las la-business-time" style="font-size: 45px;color: black;margin-top: 15px;"></i></center>
                                                         <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Histori Saham</p></center>
                                                          </div>
 
                                                     '); ?>
-                                                   <!--  <?php echo anchor('/transaksi/Transaksi_Antar_Pemodal_Detail_Transaksi_Detail/index/'.$id,'<div class="a2 " style="width:32%;height: 100px;background: ;float: left;">
+                                                    <div class="a2 active" style="width:36%;height: 100px;background: ;float: left;">
                                                         <center><i class="las la-money-check" style="font-size: 45px;color: black;margin-top: 15px;"></i></center>
                                                         <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Detail Transaksi</p></center>
-                                                    </div>'); ?> -->
+                                                    </div>
                                                 </div>
                                                 <div class="b" style="background: ; width: 96%; height: 800px;margin-left:2%;">
-                                                    <div class="b1" style="background: ;width: 100%;height: 40px;margin-top:15px;margin-bottom: 5px;">
-                                                        <div class="b11" style="width: 50%;height: 100%;background: ;float: left;">
-                                                        <center>
-                                                            <button class="btn btn-primary" onclick="modalBeli()" style=";padding-right: 40px;padding-left: 40px;">Beli</button>
-                                                            <button class="btn btn-primary ml-2 mr-2">Ralat Transaksi</button>
-                                                            <button class="btn btn-primary">Batal Transaksi</button>
-                                                        </center>
-                                                        </div>
-                                                        <div class="b11" style="width: 50%;height: 100%;background: ;float: left;">
-                                                            <center>
-                                                            <button class="btn btn-primary" onclick="modalJual()" style=";padding-right: 40px;padding-left: 40px;">Jual</button>
-                                                            <button class="btn btn-primary ml-2 mr-2">Ralat Transaksi</button>
-                                                            <button class="btn btn-primary">Batal Transaksi</button>
-                                                        </center>
-                                                        </div>
+                                                    <div class="b1" style="background: ;width: 100%;height: 40px;margin-top:15px;margin-bottom: 5px;">                                                      
                                                     </div>                                                    
                                                     <style type="text/css">
                                                         
@@ -221,35 +207,20 @@
                                                         }
                                                     </style>
                                                     <div class="b2" style="background: ;width: 100%;height: 700px;">
-                                                        <div class="b21" style="background: ;height: 100%;width: 50%;float: left;margin-top: 10px;">  
+                                                        <div class="b21" style="background: ;height: 100%;width: 100%;margin-top: 10px;">  
                                                         <center>    
-                                                            <table width="81%">
+                                                            <table width="95%">                                                          
                                                                 <tr>
-                                                                    <td colspan="3" style="text-align: center;">Transaksi Beli</td>
+                                                                	<td>Tanggal Transaksi</td>
+                                                                    <td>Nama</td>
+                                                                	<td>Keterangan</td>
+                                                                	 <td>Harga Saham</td>
+                                                                	 <td>Jumlah Saham</td>
+                                                                    <td>Status</td>
+                                                                    <td style="width:130px;">Aksi</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td>Jumlah Order</td>
-                                                                    <td>Jumlah Saham</td>
-                                                                    <td>Harga Saham</td>
-                                                                </tr>
-                                                                <tbody id="transaksiBeli"></tbody>
+                                                                <tbody id="tableHistory"></tbody>
                                                                 
-                                                            </table>
-                                                            </center>
-                                                        </div>
-                                                        
-                                                        <div class="b22" style="background: ;height: 100%;width: 50%;float: left;margin-top: 10px;">  
-                                                        <center>    
-                                                            <table width="81%">
-                                                                <tr>
-                                                                    <td colspan="3" style="text-align: center;">Transaksi Jual</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Jumlah Order</td>
-                                                                    <td>Jumlah Saham</td>
-                                                                    <td>Harga Saham</td>
-                                                                </tr>
-                                                                 <tbody id="transaksiJual"></tbody>
                                                             </table>
                                                             </center>
                                                         </div>
@@ -315,11 +286,11 @@
                                     </div>
                                     <div class="bodyTransaksi">
                                    
-                                        
-                                        
+                                    	
+                                    	
 
 
-                                        
+                      					
 
                                     </div>
                                   
@@ -357,7 +328,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label text-dark">Saham Yang Saya Punya</label>
-                                <input id="txtSahamSaya" required type="text" class="form-control nominal text-right" placeholder="" maxlength="19" name="form[nominal]" onkeypress="return validatedata(event);" style="height: 38px;" disabled>
+                                <input id="txtSahamSaya" required type="text" class="form-control nominal text-right" id="nominalPembayaran" placeholder="" maxlength="19" name="form[nominal]" onkeypress="return validatedata(event);" style="height: 38px;" disabled>
                             </div>
                            
                             <div class="form-group">
@@ -373,7 +344,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-light" onclick="clearJual()" data-dismiss="modal" style="width:50%;border: 1px solid #eaeaea;">Batal</button>
-                <button type="button" id="txtJualSaham" class="btn btn-primary ladda-button ladda-button-submit" style="width:50%;" onclick="cekJualSaham()" data-style="slide-up">Konfirmasi</button> 
+                <button type="button" id="txtJualSaham" class="btn btn-primary ladda-button ladda-button-submit" style="width:50%;" onclick="jualSaham()" data-style="slide-up">Konfirmasi</button> 
             </div>
         </div>
     </div>
@@ -427,48 +398,12 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-light" data-dismiss="modal" onclick="clearBeli()" style="width:50%;border: 1px solid #eaeaea;">Batal</button>
-                <button type="button" id="txtBeliSaham" class="btn btn-primary ladda-button ladda-button-submit" style="width:50%;" onclick="CekBeliSaham()" data-style="slide-up">Konfirmasi</button> 
+                <button type="button" id="txtBeliSaham" class="btn btn-primary ladda-button ladda-button-submit" style="width:50%;" onclick="beliSaham()" data-style="slide-up">Konfirmasi</button> 
             </div>
         </div>
     </div>
 </div>
-<!-- /Modal Beli -->
-
-<!-- modal Beli Detail -->
-<div class="modal fade" id="modal-Transaksi-detail" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" >
-            <div class="modal-header">
-                <h5 class="modal-title text-center" style="font-weight: bold;margin-left:35%;">Transaksi Saham Detail</h5>
-                <button type="button" class="close white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" >
-
-                <table width="95%">                                                          
-                    <tr>
-                        <td>Tanggal Transaksi</td>
-                        <td>Keterangan</td>
-                         <td>Harga Saham</td>
-                         <td>Jumlah Saham</td>
-                        <!--  <td>Status</td> -->
-                        <td style="width:130px;">Aksi</td>
-                    </tr>
-                    <tbody id="modalDetailTable"></tbody>
-                    
-                </table>
-            </div>
-            <div class="modal-footer">
-                
-               <!--  <button class="btn btn-light btn-center" data-dismiss="modal" onclick="clearBeli()" style="width:50%;border: 1px solid #eaeaea;">Batal</button> -->
-
-                <!-- <button type="button" id="txtBeliSaham" class="btn btn-primary ladda-button ladda-button-submit" style="width:50%;" onclick="CekBeliSaham()" data-style="slide-up">Konfirmasi</button>  -->
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end modal Beli Detail -->
+                <!-- /Modal Beli -->
 
 <!-- modal order --> 
 
@@ -508,9 +443,9 @@
         </div>
     </div>
 </div>               
-<!-- end modal order -->  
-<!-- footer start-->
-<div class="footer-sm bg-primary" style="padding: 10px;">
+<!-- end modal order -->                
+                <!-- footer start-->
+                <div class="footer-sm bg-primary" style="padding: 10px;">
     <div class="container">
         <div class="row ml-0 mr-0">
             <!-- <div class="col-md-4">
@@ -523,12 +458,12 @@
                 </ul>
             </div> -->
             <div class="offset-md-3 col-md-6 text-center pt-3">
-                <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-facebook text-primary"></i></a>
-                <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-twitter text-primary"></i></a>
-                <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-instagram text-primary"></i></a>
-                <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-whatsapp text-primary"></i></a>
-                <br>
-                <h6 class="text-white mt-3"><a class="text-white" href="">Kebijakan &amp; Privasi</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a class="text-white" href="">Syarat &amp; Ketentuan</a></h6><br>
+		        <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-facebook text-primary"></i></a>
+		        <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-twitter text-primary"></i></a>
+		        <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-instagram text-primary"></i></a>
+		        <a href="#" class="bg-white" style="border-radius: 100px; padding: 5px;"><i style="width: 20px;" class="fab fa-whatsapp text-primary"></i></a>
+		        <br>
+            	<h6 class="text-white mt-3"><a class="text-white" href="">Kebijakan &amp; Privasi</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a class="text-white" href="">Syarat &amp; Ketentuan</a></h6><br>
                 <h6 class="mt-3 text-white">© 2021 Obsido</h6>
                 <br><br>
             </div>
@@ -540,137 +475,72 @@
         </div>
     </div>
 </div>
+<?php echo print_r($set_harga_saham) ?>
 <style type="text/css">
-    .beli-href{
-        color:green;
-    }
-    .jual-href{
-        color:red;
-    }
+	.btn-pink {
+    color: #fff;
+    background-color: #fb3636;
+    border-color: #fb3636;    
+	}
+	button.btn.btn-pink.btn-sm {
+    height: 25px;
+    margin-top: -6px;
+    margin-bottom: -6px;
+    /* text-align: center; */
+    padding-top: 0;
+	}
 </style>
 <!-- footer end -->
             </div>
         </div>
         <script type="text/javascript">
-        $(document).ready(function(){
-            getTransaksiBeli();
-            getTransaksiJual();
-            HargaWajar();
-            totalInvestasiJual();
-            var sisaSaldo = <?php echo $this->session->userdata("user")->saldo ?>; 
-            $("#sisaSaldo").val(numberWithDot(sisaSaldo));
-                    
-            //ConvertLembarSaham();
-            //SendNotifSell();
+        $(document).ready(function(){     
+          HargaWajar();
+          getTableHistory();
         });
-
-        $("#lembarSaham").on("input", function () {
-          rumusTotalAndSisaSaldo();  
-        });
-        $("#hargaSaham").on("input", function () {
-          rumusTotalAndSisaSaldo();  
-        });   
-        function rumusTotalAndSisaSaldo(){
-           var lembarSaham = parseInt($("#lembarSaham").val());
-            var hargaSaham =  $("#hargaSaham").val();           
-            var biayaAdmin = parseInt($("#biayaAdmin").val());
-            var harga_per_lembar = "<?php echo $harga_per_lembar ?>";
-            var totalInvestasi = (lembarSaham * hargaSaham) + biayaAdmin;
-            $("#totalInvestasi").val(numberWithDot(totalInvestasi));  
-            if($("#lembarSaham").val()=="")$("#totalInvestasi").val("");
-            
-            var sisaSaldo = <?php echo $this->session->userdata("user")->saldo ?> - totalInvestasi; 
-            $("#sisaSaldo").val(numberWithDot(sisaSaldo));
-            if($("#totalInvestasi").val()=="")$("#sisaSaldo").val(numberWithDot("<?php echo $this->session->userdata("user")->saldo ?>"));      
+        function numberWithDot(x ="") {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
-
-        function clearBeli(){
-            $("#lembarSaham").val("");
-            $("#hargaSaham").val("");
-            $("#totalInvestasi").val("");
-        } 
-        function clearJual(){
-            $("#lembarSahamJual").val("");
-            $("#hargaSahamJual").val("");
-            $("#txtTotalInvestasi").val("");
-        } 
-        setInterval(getTransaksiBeli,1000);
-        setInterval(getTransaksiJual,1000);
-        setInterval(HargaWajar,3000);
-        setInterval(totalInvestasiJual,3000);
-        //setInterval(ConvertBuySell,3000);
-        function getTransaksiBeli(){
-            var $id = "<?php echo $id ?>";
-            $.ajax({
-                type : "POST",
-                url  : "<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/GetTransaksiBeli/'.$id)?>",
-                dataType : "JSON",
-                cache:false,
-                success: function(response){
-                  
-                       var htmlBeli ="";
-                       for(i=0;i<response.getDataBeli.dataBeli.length;i++){
-                       var data = response.getDataBeli.dataBeli[i];
-                       htmlBeli += `<tr>`;
-                       htmlBeli += `<td><a class="beli-href" href="#" onclick="modalDetailTransaksi(${$id},${data.harga_saham},'beli')">${numberWithDot(data.order_saham)}</a></td>`;
-                       htmlBeli += `<td>${numberWithDot(data.lembar_saham)}</td>`;
-                       htmlBeli += `<td>${numberWithDot(data.harga_saham)}</td>`;
-                       htmlBeli += `</tr>`;
-                       }     
-                       $("#transaksiBeli").html(htmlBeli) 
-                },
-                error :function(){
-                    alert("Error");
-                }
-            });
-        }
-        function modalDetailTransaksi(id,harga,jual_beli){
-            data = {
-                id : id,
-                harga:harga,
-                jual_beli:jual_beli
+        function getTableHistory(){
+            var $set_harga_saham = <?php echo $set_harga_saham ?>;
+            var $jb = "<?php echo $jual_beli ?>";
+            var url = '<?php echo base_url("/transaksi/Transaksi_Antar_Pemodal_Detail_Transaksi_Detail/GetTb_Transaksi_Jual_Beli/".$id."/".$set_harga_saham) ?>'; 
+            if($jb == "beli"){
+                url = '<?php echo base_url("/transaksi/Transaksi_Antar_Pemodal_Detail_Transaksi_Detail/GetTb_Transaksi_Jual_Beli/".$id."/".$set_harga_saham."/"."beli") ?>';    
+            }else if($jb == "jual"){
+                 url = '<?php echo base_url("/transaksi/Transaksi_Antar_Pemodal_Detail_Transaksi_Detail/GetTb_Transaksi_Jual_Beli/".$id."/".$set_harga_saham."/"."jual") ?>';
             }
-            $.ajax({
-                type : "POST",
-                data:data,
-                url  : "<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/GetTb_Transaksi_Jual_Beli')?>",
-                dataType : "JSON",
-                cache:false,
-                success: function(respon){
-                    //console.log(response);
-                    var html = "";
-                    var ket = "";
-                    for(var i=0;i < respon.data.dataTransaksi.length;i++){
-                        var getData = respon.data.dataTransaksi[i];
-                        if(getData.keterangan == "jual"){
-                            ket = "order";
-                        }else{
-                            ket = "jual";
-                        }
-                        //var data = {id:`${getData.id}`,status:`${getData.status}`,lembar_saham:`${getData.lembar_saham}`};
-                        html += `<tr>`; 
-                        html += `<td>${getData.create_date = getData.create_date == null ? "" : getData.create_date}</td>`; 
-   
-                        html += `<td>${getData.keterangan}</td>`;   
-                        html += `<td>${getData.harga_saham}</td>`;  
-                        html += `<td>${getData.lembar_saham}</td>`; 
-                       /*html += `<td>${getData.status}</td>`;*/
-                        if(getData.status == "Match"){
-                            html += `<td><button type="button" class="btn btn-sm btn-secondary">${ket}</button></td>`;
-                        }else{
-                            html += `<td><button type="button" onclick="Order('${getData.id}','${getData.lembar_saham}','${getData.harga_saham}')" class="btn btn-sm btn-primary">${ket}</button></td>`;
-                        }   
-                            
-                        html += `</tr>`;    
-                    }
-                    $("#modalDetailTable").html(html);
-                },
-                error :function(){
-                    alert("Error");
-                }
-            });
+        	
+            var email = '<?php echo $this->session->userdata("user")->email ?>';
+        	$.ajax({
+				url: url,		
+				dataType:"JSON",
+				success: function(respon){
+					console.log('Data = ',respon.data);
+					var html = "";
+					for(var i=0;i < respon.data.dataTransaksi.length;i++){
 
-            $("#modal-Transaksi-detail").modal("show");
+						var getData = respon.data.dataTransaksi[i];
+                        //var data = {id:`${getData.id}`,status:`${getData.status}`,lembar_saham:`${getData.lembar_saham}`};
+						html += `<tr>`;	
+						html += `<td>${getData.create_date = getData.create_date == null ? "" : getData.create_date}</td>`;	
+                        html += `<td>${getData.nama}</td>`;   
+						html += `<td>${getData.keterangan}</td>`;	
+						html += `<td>${getData.harga_saham}</td>`;	
+						html += `<td>${getData.lembar_saham}</td>`;	
+						html += `<td>${getData.status}</td>`;
+                        if(getData.status == "Match"){
+                            html += `<td><button type="button" class="btn btn-sm btn-secondary">order</button></td>`;
+                        }else{
+                            html += `<td><button type="button" onclick="Order('${getData.id}','${getData.lembar_saham}','${getData.harga_saham}')" class="btn btn-sm btn-primary">order</button></td>`;
+                        }	
+							
+						html += `</tr>`;	
+					}
+					$("#tableHistory").html(html);
+				},
+				error: function(){alert("getTableHistory Error")}        		
+        	});
         }
         function Order(id,lembar_saham,harga_saham){
             $("#orderJumlahSaham").html(lembar_saham);
@@ -679,13 +549,11 @@
             var jumlahSaham = $("#orderJumlahSaham").val(lembar_saham);
             var hargaSaham = $("#orderHargaSaham").val(harga_saham);
 
-            $("#modal-Transaksi-detail").modal("hide");
             $("#modal-order").modal("show");
-            
         }
         function UpdateOrder()
         {
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateOrder') ?>';
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail_Transaksi_Detail/UpdateOrder') ?>';
             var data = {
                 idOrder : $("#orderId").val()
             }
@@ -703,429 +571,34 @@
             });
         
         }
-        function getTransaksiJual(){
-            var $id = "<?php echo $id ?>";
-            $.ajax({
-                type : "POST",
-                url  : "<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/GetVTransaksiJual/'.$id)?>",
-                dataType : "JSON",
-                cache:false,
-                success: function(response){
-                       var htmlJual ="";
-                       for(i=0;i<response.getDataJual.dataJual.length;i++){
-                       var data = response.getDataJual.dataJual[i];                   
-                       htmlJual += `<tr>`;
-                       htmlJual += `<td><a class="jual-href" href="#" onclick="modalDetailTransaksi(${$id},${data.harga_saham},'jual')">${numberWithDot(data.order_saham)}</a></td>`;
-                       htmlJual += `<td>${numberWithDot(data.lembar_saham)}</td>`;
-                       htmlJual += `<td>${numberWithDot(data.harga_saham)}</td>`;
-                       htmlJual += `</tr>`;                     
-                       }     
-                       $("#transaksiJual").html(htmlJual) 
-                },
-                error :function(){
-                    alert("Error");
-                }
-            });
-        }
-        var arrJual = [{Id:0, lembar_saham : 0}];
-        var arrBeli = [{Id:0, lembar_saham : 0}];
-        
-        function UpdateConvertSell(id_tb_transaksi_jual_beli,convert_lembar_saham){
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateConvertSell') ?>';
-            var data = {
-                Id : id_tb_transaksi_jual_beli,
-                convert_lembar_saham : convert_lembar_saham
-            }
-            $.ajax({
-                url :url,
-                type:"post",
-                data:data,
-                dataType:"Json",
-                success:function(respon){
-                    
-                },
-                error:function(){alert("UpdateConvertSell Error")}
-            });
-        }
-        function numberWithDot(x) {
-            if(x == null){x=0}
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-        function modalBeli()
-        {
-            document.getElementById("txtBeliSaham").disabled = false;
-            $("#modal-beli").modal("show");
-        }
-        function modalJual()
-        {
-            document.getElementById("txtJualSaham").disabled = false;
-            if($("#txtSahamSaya").val() == 0){
-                document.getElementById("txtJualSaham").disabled = true;
-            }
-            $("#modal-jual").modal("show");   
-        }
-        function CekBeliSaham(){
-            beliSaham();
-        }
-        function beliSaham()
-        {
-            document.getElementById("txtBeliSaham").disabled = true;
-            var lembarSaham = $("#lembarSaham").val();            
-            var id = "<?php echo $id ?>";
-            var harga_per_lembar = "<?php echo $harga_per_lembar ?>";
-            $.ajax({
-                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/AddTransaksiJualBeli_beli')?>",
-                type:"POST",
-                dataType:"JSON",
-                data:{
-                    id:id,
-                    lembarSaham : lembarSaham,
-                    keterangan : "beli",
-                    hargaSaham: $("#hargaSaham").val()
-                },
-                success:function(respon){
-                    //ConvertBuy(lembarSaham);
-                    clearBeli();
-                    $("#modal-beli").modal("hide");
-                    toastrshow("success", "Data Berhasil Disimpan", "success");
-                    $("#lembarSaham").val("");
-                    totalInvestasiJual();
-                    document.getElementById("txtBeliSaham").disabled = false;
-                },
-                error:function(){
-                    alert("Error Beli Saham");
-                    document.getElementById("txtBeliSaham").disabled = false;
-                }
-
-            });
-        }
-        function ConvertBuy(lembarSahamBeli)
-        {
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertBuy') ?>';
-            $.ajax({
-                url: url,
-                dataType:"Json",
-                success:function(respon){                  
-                    var jual = respon.ConvertBuy.jual;
-                    for(var i=0;i<jual.length;i++){
-                        if(lembarSahamBeli>0){
-                            console.log(jual[i].id);
-                            UpdateJual(jual[i].id,0);
-                            lembarSahamBeli = lembarSahamBeli - jual[i].convert_lembar_saham 
-                            if(lembarSahamBeli<0){
-                                                                
-                                console.log(jual[i].id,Math.abs(lembarSahamBeli));
-                                UpdateJual(jual[i].id,Math.abs(lembarSahamBeli));
-                            }   
-                        }
-                        
-                        
-                    }
-
-
-                },
-                error:function(){alert("ConvertBuySell Error")}
-            });  
-        }
-
-        function UpdateJual(id_tb_transaksi_jual_beli,convert_lembar_saham){
-            
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateJual') ?>';
-            var data = {
-                Id : id_tb_transaksi_jual_beli,
-                convert_lembar_saham : convert_lembar_saham
-            }
-            $.ajax({
-                url :url,
-                type:"post",
-                data:data,
-                dataType:"Json",
-                success:function(respon){
-               
-                },
-                error:function(){alert("UpdateJual Error")}
-            });
-        }
-
-        function cekJualSaham(){
-            var message = "";
-            if(parseInt($("#lembarSahamJual").val()) > parseInt($("#txtSahamSaya").val())){
-              message += "Lembar Saham Tidak Cukup \n";
-            }
-            if($("#lembarSahamJual").val() == ""){
-              message += "Lembar Saham Kosong \n";
-            }
-            if($("#hargaSahamJual").val() == ""){
-              message += "Saham Jual Kosong \n";   
-            }
-            if(message == ""){
-                jualSaham();       
-            }else{
-                alert(message);
-            }
-        }
-        function jualSaham()
-        {
-            document.getElementById("txtJualSaham").disabled = true;
-            var lembarSahamJual = $("#lembarSahamJual").val();
-            var keterangan = "jual";
-            var id = "<?php echo $id ?>";            
-            var hargaSahamJual = $("#hargaSahamJual").val();            
-            $.ajax({
-                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/AddTransaksiJualBeli_jual')?>",
-                type:"POST",
-                dataType:"JSON",
-                data:{
-                    id:id,
-                    lembarSahamJual : lembarSahamJual,
-                    keterangan : keterangan,
-                    hargaSahamJual: hargaSahamJual
-                },
-                
-                success:function(respon){
-                    ConvertSell(lembarSahamJual,id);
-                    $("#modal-jual").modal("hide");
-                    toastrshow("success", "Data Berhasil Disimpan", "success");
-                    $("#lembarSahamJual").val("");
-                    totalInvestasiJual();
-                    clearJual();
-                    document.getElementById("txtJualSaham").disabled = false;
-                    SendNotifSell();           
-                },
-                error:function(){
-                    alert("Error Beli Saham");
-                    document.getElementById("txtJualSaham").disabled = false;
-                }
-
-            });
-        }
-
-       /* function ConvertLembarSaham()
-        {
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertLembarSaham') ?>';
-            $.ajax({
-                url: url,
-                dataType:"Json",
-                success:function(respon){                  
-                    
-                },
-                error:function(){alert("ConvertBuySell Error")}
-            });  
-
-        }*/
-      /*var arrBeli = [0];*/
-        //Update Beli
-        function ConvertSell(lembarSahamJual,id){
-      /*      console.log(lembarSahamJual);*/
-       var $id = id;
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertSell/'.$id) ?>';
-            $.ajax({
-                url: url,
-                dataType:"Json",
-                success:function(respon){                  
-                    var beli = respon.ConvertSell.beli;
-                    var tbSaham = respon.ConvertSell.tbSaham;
-                    //var sumBeli = respon.ConvertSell.sumBeli[0].convert_lembar_saham;
-                    
-                   
-                    /*for(var i=0;i<beli.length;i++){
-                        if(lembarSahamJual>0){
-                           console.log(beli[i].id);
-                            UpdateBeli(beli[i].id,0);
-                            lembarSahamJual = lembarSahamJual - beli[i].convert_lembar_saham 
-                            if(lembarSahamJual<0){
-                                
-                               console.log(beli[i].id,Math.abs(parseInt(lembarSahamJual)));
-                                UpdateBeli(beli[i].id,Math.abs(parseInt(lembarSahamJual)));
-                            }   
-                        }                        
-                      }*/
-
-                  
-                    for(var i=0;i<tbSaham.length;i++){
-                    if(lembarSahamJual>0){
-                       console.log("tb_saham id with harga 0 = ",tbSaham[i].id);
-                        UpdateBeli2(tbSaham[i].id,0);
-                        lembarSahamJual = lembarSahamJual - tbSaham[i].convert_lembar_saham 
-                        if(lembarSahamJual<=0){
-                            
-                            console.log("tb_saham id with Sisa (<= 0) ",tbSaham[i].id,Math.abs(lembarSahamJual));
-                            UpdateBeli2(tbSaham[i].id,Math.abs(lembarSahamJual));
-                        }   
-                       }                        
-                    }
-                   
-
-
-                },
-                error:function(){alert("ConvertBuySell Error")}
-            });    
-        }
-        function UpdateBeli(id_tb_transaksi_jual_beli,convert_lembar_saham){
-            
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateBeli') ?>';
-            var data = {
-                Id : id_tb_transaksi_jual_beli,
-                convert_lembar_saham : convert_lembar_saham
-            }
-            $.ajax({
-                url :url,
-                type:"post",
-                data:data,
-                dataType:"Json",
-                success:function(respon){
-               
-                },
-                error:function(){alert("UpdateBeli Error")}
-            });
-        }
-        function UpdateBeli2(id_tb_transaksi_jual_beli,convert_lembar_saham){
-            
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateBeli2') ?>';
-            var data = {
-                Id : id_tb_transaksi_jual_beli,
-                convert_lembar_saham : convert_lembar_saham
-            }
-            $.ajax({
-                url :url,
-                type:"post",
-                data:data,
-                dataType:"Json",
-                success:function(respon){
-               
-                },
-                error:function(){alert("UpdateBeli Error")}
-            });
-        }
-        function UpdateBeliPartialMatch(id_tb_transaksi_jual_beli,convert_lembar_saham){
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateBeliPartialMatch') ?>';
-            var data = {
-                Id : id_tb_transaksi_jual_beli,
-                convert_lembar_saham : convert_lembar_saham
-            }
-            $.ajax({
-                url :url,
-                type:"post",
-                data:data,
-                dataType:"Json",
-                success:function(respon){
-                   
-                },
-                error:function(){alert("UpdateBeli Error")}
-            });
-        }
-        function HargaWajar()
+ 		function HargaWajar()
         {
             var $id = "<?php echo $id ?>";
             $.ajax({
                 dataType:"JSON",              
                 url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/HargaWajar/'.$id)?>",
                 success:function(respon){
-                    /*var total = respon.getHargaWajar.defaulHarga[0].harga_per_lembar;
-                    if(respon.getHargaWajar.harga_per_lembar[0].harga_saham != null){
-                    var harga_per_lembar = respon.getHargaWajar.harga_per_lembar[0].harga_saham; 
-                    var countharga_per_lembar = respon.getHargaWajar.lembar_saham_beli;
-                    total =  (harga_per_lembar / countharga_per_lembar);
-                    }*/
+     
                    $("#txtHargaWajar").html(numberWithDot(respon.getHargaWajar.defaulHarga[0].harga_per_lembar));
                 },
                 error:function(){alert("Error Harga Wajar")}
             });
         }
-        function totalInvestasiJual()
+        /*function batalTransaksi(data)
         {
-            var $id = "<?php echo $id ?>";
+            var $id = "";
             $.ajax({
-                dataType:"JSON",              
-                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/totalInvestasiJual/'.$id)?>",
-                success:function(respon){
-                 
-                  var getTbSahamConvertLembarSaham = respon.totalInvestasi.sumConvertLembarSahamTb_Saham[0].convert_lembar_saham;
-                  // var totalInves = respon.totalInvestasi.totalInvestasiFromViewBeli[0].jumlah_saham;   
-                   var totalSahamSaya = respon.totalInvestasi.sumBeli[0].convert_lembar_saham;
-                   if(totalSahamSaya == null || totalSahamSaya < 0){
-                     totalSahamSaya = 0;
-                   }
-                   if(getTbSahamConvertLembarSaham != null && getTbSahamConvertLembarSaham > 0){
-                      totalSahamSaya = parseInt(totalSahamSaya) + parseInt(getTbSahamConvertLembarSaham);
-                   }
-                                        
-                   $("#txtSahamSaya").val(totalSahamSaya);
-                },
-                error:function(){alert("Error Total Investasi")}
-            });
-        }
-        //$("#txtTotalInvestasi").val(numberWithDot(totalInvesiJual));
-        $("#hargaSahamJual").on("input", function () {
-          rumusTotalInvestasi();  
-        });
-        $("#lembarSahamJual").on("input", function () {
-          rumusTotalInvestasi();  
-        });
-        function rumusTotalInvestasi(){
-                 
-            var totalInvesiJual = $("#lembarSahamJual").val() * $("#hargaSahamJual").val();
-           $("#txtTotalInvestasi").val(numberWithDot(totalInvesiJual));
-        } 
-        function SendNotifSell(){
-            var $id = "<?php echo $id ?>";
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/SendNotifSell/'.$id) ?>';
-            $.ajax({
-                url: url,
-                dataType:"Json",
-                success:function(respon){                  
-                    var tb_saham = respon.SendNotif.tb_saham;
-                    //var tb_transaksi_jual_beli = respon.SendNotif.tb_transaksi_jual_beli;
-                    //console.log("tb_transaksi_jual_beli = ",tb_transaksi_jual_beli[0].email);
-                    var arrEmail = [];
-                    //tb_transaksi_jual_beli[0].email;
-                    for(var a=0;a<tb_saham.length;a++)
-                    { 
-                        var objArray = {email:tb_saham[a].email};
-                        //console.log(objArray);
-                        arrEmail.push(objArray);
-                    }
-                    /*for(var b=0;b<tb_transaksi_jual_beli.length;b++)
-                    {
-                        var objArray2 = {email:tb_transaksi_jual_beli[b].email};                      
-                        var arrCek = arrEmail.find(x => x.email == objArray2.email);
-                        if(!arrCek){
-                            arrEmail.push(objArray2);    
-                        }
-                        
-                    }*/
-                    
-                    console.log(arrEmail);
-                    for(var c=0;c<arrEmail.length;c++){
-                        UpdateSendNotifSell(arrEmail[c].email);
-                        console.log("Send To Email =",arrEmail[c].email);
-                    }
-                    
-                },
-                error:function(){alert("SendNotifSell Error")}
-            });  
-        }
-
-        function UpdateSendNotifSell(email){
-
-         var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateSendNotifSell') ?>';
-         var idPemodal = "<?php echo $id ?>";
-            var data = {
-                toEmail : email,
-                idPemodal: idPemodal
-            }
-            $.ajax({
-                url :url,
-                type:"post",
                 data:data,
-                dataType:"Json",
+                dataType:"JSON",
+                type:"POST",              
+                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/HargaWajar/'.$id)?>",
                 success:function(respon){
-                   
+     
+                   $("#txtHargaWajar").html(numberWithDot(respon.getHargaWajar.defaulHarga[0].harga_per_lembar));
                 },
-                error:function(){alert("Update SendNotifSell h Error")}
-            });   
-        }
-
+                error:function(){alert("Error Harga Wajar")}
+            });
+        }*/
         </script>
         <script type="text/javascript" src="<?php echo base_url("assets/js/moment.min.js"); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url("assets/js/jquery-2.1.1.js"); ?>"></script>

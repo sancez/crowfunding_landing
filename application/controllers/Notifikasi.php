@@ -64,7 +64,11 @@ class Notifikasi extends MY_Controller {
 	{
 		$email = $this->session->userdata("user")->email;
 		$this->db->query("update tb_notifikasi set status_dibaca = 'Sudah Dibaca' where id='$id' and email='$email'");
-		redirect(base_url());
+		$getLink = $this->db->select("link")->get("tb_notifikasi")->result();
+		foreach ($getLink as $value) {
+			$link = $value->link;
+		}
+		redirect($link);
 	}
 	public function iconNotifUpdate()
 	{

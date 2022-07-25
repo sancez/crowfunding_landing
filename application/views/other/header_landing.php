@@ -16,14 +16,14 @@
     }
 ?> 
 <style type="text/css">
-    #txtNotifikasi .active{
+    #txtNotifikasi .actives{
         background: #eaeaea;
         color: black;
     }
-    #txtNotifikasi .active:hover{
+    #txtNotifikasi .actives:hover{
         background: white;
     }
-    #txtNotifikasi .active:active{
+    #txtNotifikasi .actives:active{
         background-color: #0084ff;
         color: white;
     }
@@ -766,8 +766,14 @@ function getData(){
             for (i=0;i< getDataNotify.length;i++){
                 var rowData = getDataNotify[i];
                 /*<a class="dropdown-item ${rowData.status_dibaca == "Belum Dibaca"?"active":""}" href="<?php echo base_url("index.php/Notifikasi/update_status_dibaca/")?>${rowData.id}" style="font-size: 13px;">${rowData.remark} Rp. ${rowData.nominal} Berhasil</a>`;*/
+                if(rowData.type == "TransaksiAntarPemodal")
+                {
+                    contentBody += `
+                    <a class="dropdown-item ${rowData.status_dibaca == "Belum Dibaca"?"actives":""}" href="<?php echo base_url("index.php/Notifikasi/update_status_dibaca/")?>${rowData.id}"  style="font-size: 13px;">${rowData.remark} </a>`;
+                }else{
                 contentBody += `
-                    <a class="dropdown-item ${rowData.status_dibaca == "Belum Dibaca"?"active":""}"  style="font-size: 13px;">${rowData.remark} Rp. ${rowData.nominal} Berhasil</a>`;
+                    <a class="dropdown-item ${rowData.status_dibaca == "Belum Dibaca"?"actives":""}" href="<?php echo base_url("index.php/Notifikasi/update_status_dibaca/")?>${rowData.id}" style="font-size: 13px;">${rowData.remark} Rp. ${rowData.nominal} Berhasil</a>`;
+                }
                 if(response.get_Datas[0].countTableNotifikasi > 0){
                    getBodyNotifikasiDiv = `<div class="dropdown-menu" style="margin-left:-290px;margin-top:5px;" id="txtNotifikasi" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#" style="font-size: 13px;">Pemberitahuan</a>
@@ -815,7 +821,7 @@ function KonfirmasiTopUp()
             });   
     SimpanTambahTopUp();             
 }    
-function iconNotifUpdate(){
+/*function iconNotifUpdate(){
         $.ajax({
                 type : "POST",
                 url  : "<?php echo base_url('index.php/Notifikasi/iconNotifUpdate')?>",
@@ -827,6 +833,6 @@ function iconNotifUpdate(){
                 error : function(){alert("Error")
                 }
         }); 
-}
+}*/
 
 </script>

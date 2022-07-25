@@ -548,6 +548,7 @@
                             window.location.href = base_url + "/portofolio.html";
                         }, "", "insert_transaksi");
                         SaveNotifikasiInvestasi();
+                        AddSaham();
                     }
                 }
             });
@@ -565,7 +566,37 @@
                         }); 
 
             }    
+            function AddSaham(){
+         
+                var lembarSaham = $("#txtLembarSaham").val();;            
+                var id = "<?php echo $properti->id ?>";
+                var harga_per_lembar = "<?php echo $properti->harga_per_lembar ?>";
+                $.ajax({
+                    url:"<?php echo base_url('index.php/properti/Properti/AddSaham')?>",
+                    type:"POST",
+                    dataType:"JSON",
+                    data:{
+                        id:id,
+                        lembarSaham : lembarSaham,
+                        keterangan : "beli",
+                        hargaSaham: harga_per_lembar
+                    },
+                    success:function(respon){
+                        //ConvertBuy(lembarSaham);
+                        clearBeli();
+                        $("#modal-beli").modal("hide");
+                        toastrshow("success", "Data Berhasil Disimpan", "success");
+                        $("#lembarSaham").val("");
+                        totalInvestasiJual();
+                        document.getElementById("txtBeliSaham").disabled = false;
+                    },
+                    error:function(){
+                        alert("Error Beli Saham");
+                        document.getElementById("txtBeliSaham").disabled = false;
+                    }
 
+                });
+            }
             function ProsesHistoriDana(){
                 var history_dana = <?php echo json_encode($kelola_dana); ?>;
                 var html_data_item = "";

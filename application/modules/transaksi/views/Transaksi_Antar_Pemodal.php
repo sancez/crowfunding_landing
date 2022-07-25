@@ -244,7 +244,21 @@
                                           /* $("#txtHargaWajar").html(numberWithDot(total));*/
 
                                      ?>
-
+                                    <?php 
+                                        
+                                        $a =  new DateTime($item->tgl_selesai);
+                                        $b =  new DateTime($item->tgl_mulai);
+                                        $oneYearsDistanceADay =  $a->diff($b)->days;
+                                        if($oneYearsDistanceADay >= 365 ){
+                                     ?>
+                                     <?php 
+                                        $get_transaksi = $this->db->select_sum('nominal')
+                                        ->where("id_properti",$item->id)
+                                        ->get('tb_transaksi')->result();
+                                        foreach ($get_transaksi as $v_transaksi) {                                            
+                                         if($v_transaksi->nominal == $item->jumlah_dana){                                           
+                                         
+                                      ?>
                                     	<div class="a mb-3" style="margin-left:2.5%;width: 30%;height: 380px;background: #eaeaea;float: left;">
                                     			<div class="a1" style="width: 100%;height: 220px;">                                    				
                                                 <img src="<?php echo $foto; ?>" style="width:100%;height:100;">
@@ -270,6 +284,9 @@
 
                                     	</div>
 
+                                    <?php } ?>
+                                    <?php } ?>
+                                    <?php } ?>
                                     <?php endforeach ?> 
                                     
                                     	

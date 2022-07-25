@@ -245,7 +245,7 @@
 			$args["tgl"] = date("Y-m-d H:i:s");
 			$args["status_verifikasi"] = 1;
 			$args["nominal"] = str_replace(".", "", $args["nominal"]);
-			$args["biaya_administrasi"] = (int)$this->session->userdata("biaya_admin");
+			$args["biaya_administrasi"] = (int)$this->session->userdata("biaya_admin");			
 			$query = $this->db->insert("tb_transaksi", $args);
 			if(!$query){
 			   	$return_data["IsError"] = true;

@@ -52,6 +52,28 @@ class Properti extends MY_Controller
         ));       
 	}
 
- 	
+ 	function AddSaham(){
+ 		date_default_timezone_set('asia/jakarta');
+		$id =  $this->input->post('id');		
+		$lembarSaham =  $this->input->post('lembarSaham');		
+		$keterangan =  $this->input->post('keterangan');
+		$hargaSaham =  $this->input->post('hargaSaham');
+
+		$data = array(
+			'id_properti' => $id,
+			'email'=> $this->session->userdata("user")->email, 
+			'lembar_saham' => $lembarSaham,
+			'harga_saham' => $hargaSaham, 
+			'order_saham' => 1, 
+			'status' => "Pending", 
+			'keterangan' => $keterangan,
+			'create_date' => date('Y-m-d H:i:s'),
+			'modified_date' => date('Y-m-d H:i:s'),
+			'convert_lembar_saham' => $lembarSaham
+
+		);		
+		$result = $this->db->insert('tb_saham',$data);
+		echo json_encode(["data" => $result]); 		
+ 	}
     
 }

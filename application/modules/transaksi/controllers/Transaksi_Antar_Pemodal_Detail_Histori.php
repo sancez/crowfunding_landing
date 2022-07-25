@@ -25,7 +25,7 @@ class Transaksi_Antar_Pemodal_Detail_Histori extends MY_Controller
 			->where("id_properti",$id)
 			->where("email",$this->session->userdata("user")->email)
 			->order_by("create_date","desc")
-			->get("Tb_Transaksi_Jual_Beli")
+			->get("tb_transaksi_jual_beli")
 			->result();
 		$dataTransaksi = [
 			"dataTransaksi" => $data 

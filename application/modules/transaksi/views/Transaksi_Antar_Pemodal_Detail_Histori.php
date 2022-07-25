@@ -163,22 +163,22 @@
                                                     </div>
                                                     <?php endforeach ?>
                                                     <?php  echo anchor('/transaksi/Transaksi_Antar_Pemodal_Detail/Detail/'.$id,'
-                                                    	<div class="a2 " style="width:32%;height: 100px;background: ;float: left;">
+                                                    	<div class="a2 " style="width:50%;height: 100px;background: ;float: left;">
                                                         <center><img style="margin-top: 15px;height: 45px;" src='.base_url("assets/icons/transaksiexchange%20Money.png") .'></center>
                                                         <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Transaksi Saham</p></center>
                                                     </div>
                                                     '); ?>
                                                     <?php echo anchor('/transaksi/Transaksi_Antar_Pemodal_Detail_Histori/Detail/'.$id,'
-                                                        <div class="a2 active" style="width:32%;height: 100px;background: ;float: left;border-left:1px solid black;border-right: 1px solid black">
+                                                        <div class="a2 active" style="width:50%;height: 100px;background: ;float: left;border-left:1px solid black;border-right:">
                                                         <center><i class="las la-business-time" style="font-size: 45px;color: black;margin-top: 15px;"></i></center>
                                                         <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Histori Saham</p></center>
                                                          </div>
 
                                                     '); ?>
-                                                    <div class="a2 " style="width:32%;height: 100px;background: ;float: left;">
+                                                    <!-- <?php echo anchor('/transaksi/Transaksi_Antar_Pemodal_Detail_Transaksi_Detail/index/'.$id,'<div class="a2 " style="width:32%;height: 100px;background: ;float: left;">
                                                         <center><i class="las la-money-check" style="font-size: 45px;color: black;margin-top: 15px;"></i></center>
-                                                        <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Portofolio Saham</p></center>
-                                                    </div>
+                                                        <center><p style="font-size: 13px;font-weight: bold;color:black;margin-top: 5px;">Detail Transaksi</p></center>
+                                                    </div>'); ?> -->
                                                 </div>
                                                 <div class="b" style="background: ; width: 96%; height: 800px;margin-left:2%;">
                                                     <div class="b1" style="background: ;width: 100%;height: 40px;margin-top:15px;margin-bottom: 5px;">                                                      
@@ -469,13 +469,14 @@
 					var html = "";
 					for(var i=0;i < respon.data.dataTransaksi.length;i++){
 						var getData = respon.data.dataTransaksi[i];
+                        //var data = {id:`${getData.id}`,status:`${getData.status}`,lembar_saham:`${getData.lembar_saham}`};
 						html += `<tr>`;	
 						html += `<td>${getData.create_date = getData.create_date == null ? "" : getData.create_date}</td>`;	
 						html += `<td>${getData.keterangan}</td>`;	
 						html += `<td>${getData.harga_saham}</td>`;	
 						html += `<td>${getData.lembar_saham}</td>`;	
 						html += `<td>${getData.status}</td>`;	
-						html += `<td><button type="button" class="btn btn-pink btn-sm">Batalkan</button></td>`;	
+						html += `<td><button type="button" onclick="batalTransaksi(data)" class="btn btn-pink btn-sm">Batalkan</button></td>`;	
 						html += `</tr>`;	
 					}
 					$("#tableHistory").html(html);
@@ -496,6 +497,21 @@
                 error:function(){alert("Error Harga Wajar")}
             });
         }
+        /*function batalTransaksi(data)
+        {
+            var $id = "";
+            $.ajax({
+                data:data,
+                dataType:"JSON",
+                type:"POST",              
+                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/HargaWajar/'.$id)?>",
+                success:function(respon){
+     
+                   $("#txtHargaWajar").html(numberWithDot(respon.getHargaWajar.defaulHarga[0].harga_per_lembar));
+                },
+                error:function(){alert("Error Harga Wajar")}
+            });
+        }*/
         </script>
         <script type="text/javascript" src="<?php echo base_url("assets/js/moment.min.js"); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url("assets/js/jquery-2.1.1.js"); ?>"></script>
