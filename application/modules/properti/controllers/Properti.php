@@ -76,4 +76,32 @@ class Properti extends MY_Controller
 		echo json_encode(["data" => $result]); 		
  	}
     
+    function CekLastDateAndExpiredDateForShowTransaksiAntarPemodal()
+    {
+    	date_default_timezone_set('asia/jakarta');
+    	$date = date('Y-m-d H:i:s');    	 
+    	$startDate = date('Y-m-d H:i:s', strtotime($date. ' + 1 years'));
+    	$id =  $this->input->post('id');
+    	$tb_properti = $this->db->query("select * from tb_properti where id='$id'")->result();
+    	$message = "No Proses";
+    	$tb_transaksi = $this->db->select_sum('nominal')
+    					->where('id_properti',$id)
+    					->get('tb_transaksi')->result();
+    	foreach ($tb_properti as $item_properti) {
+    		foreach ($tb_transaksi as $item_transaksi) {
+    			if($item_properti->jumlah_dana == $item_transaksi->nominal){
+    				$this->db->query("update tb_properti set start_date = '$startDate'  where id = '$id'");
+    				$message = "Update Success";
+    			}
+    		}
+    	}
+
+    	$result = [
+    		'tb_properti' => $tb_properti,
+    		'tb_transaksi' => $tb_transaksi,
+    		'startDate' => $startDate,
+    		'message' => $message
+    	];
+    	echo json_encode(["TransaksiAntarPemodalShowDate" => $result]);
+    }
 }

@@ -20,7 +20,7 @@ class Notifikasi extends MY_Controller {
         "totalNotifikasi" => $totalNotifikasi,
         "datas" => $datas,
         "nama" => $username->email,
-        "AllData" => ""//$this->session->userdata("user")
+        "AllData" => $this->session->userdata("user")
     	];
 
         echo json_encode(["get_Datas" => $data]);	

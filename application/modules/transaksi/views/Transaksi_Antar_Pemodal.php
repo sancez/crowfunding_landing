@@ -246,10 +246,14 @@
                                      ?>
                                     <?php 
                                         
-                                        $a =  new DateTime($item->tgl_selesai);
+                                        /*$a =  new DateTime($item->tgl_selesai);
                                         $b =  new DateTime($item->tgl_mulai);
                                         $oneYearsDistanceADay =  $a->diff($b)->days;
-                                        if($oneYearsDistanceADay >= 365 ){
+                                        if($oneYearsDistanceADay >= 365 ){*/
+                                        date_default_timezone_set('asia/jakarta');                                        
+                                  
+                                        if($item->start_date <= date("Y-m-d H:i:s") and $item->start_date != null and $item->start_date != '0000-00-00 00:00:00'){
+                                            
                                      ?>
                                      <?php 
                                         $get_transaksi = $this->db->select_sum('nominal')

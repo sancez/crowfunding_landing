@@ -41,3 +41,8 @@ ERROR - 2022-07-25 14:34:28 --> 404 Page Not Found: /index
 ERROR - 2022-07-25 14:34:31 --> 404 Page Not Found: /index
 ERROR - 2022-07-25 14:34:31 --> 404 Page Not Found: /index
 ERROR - 2022-07-25 14:34:31 --> 404 Page Not Found: /index
+ERROR - 2022-07-25 22:30:40 --> Severity: Warning --> Undefined variable $dana_saat_ini D:\Sance\Xampp10\htdocs\crowfunding_landing\application\views\other\header_landing.php 479
+ERROR - 2022-07-25 22:32:07 --> Severity: Warning --> Undefined variable $dana_saat_ini D:\Sance\Xampp10\htdocs\crowfunding_landing\application\views\other\header_landing.php 479
+ERROR - 2022-07-25 22:32:07 --> Severity: Warning --> Attempt to read property "saldo" on null D:\Sance\Xampp10\htdocs\crowfunding_landing\application\modules\transaksi\views\Transaksi_Antar_Pemodal_Detail.php 560
+ERROR - 2022-07-25 22:32:07 --> Severity: Warning --> Attempt to read property "saldo" on null D:\Sance\Xampp10\htdocs\crowfunding_landing\application\modules\transaksi\views\Transaksi_Antar_Pemodal_Detail.php 582
+ERROR - 2022-07-25 22:32:07 --> Severity: Warning --> Attempt to read property "saldo" on null D:\Sance\Xampp10\htdocs\crowfunding_landing\application\modules\transaksi\views\Transaksi_Antar_Pemodal_Detail.php 584

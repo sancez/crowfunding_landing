@@ -544,11 +544,13 @@
                         $("#modal-verifikasi-pin").modal("hide");
 
                         laddasubmit = properti_pembelian.find(".ladda-button-submit");
-                        UpdateData(form_pembelian, function(resp) {
+                        UpdateData(form_pembelian, function(resp) {                            
+                            SaveNotifikasiInvestasi();
+                            AddSaham();
+                            CekLastDateAndExpiredDateForShowTransaksiAntarPemodal();
                             window.location.href = base_url + "/portofolio.html";
                         }, "", "insert_transaksi");
-                        SaveNotifikasiInvestasi();
-                        AddSaham();
+                                                
                     }
                 }
             });
@@ -597,6 +599,29 @@
 
                 });
             }
+
+            function CekLastDateAndExpiredDateForShowTransaksiAntarPemodal()
+            {
+                var id = "<?php echo $properti->id ?>";               
+                $.ajax({
+                    url:"<?php echo base_url('index.php/properti/Properti/CekLastDateAndExpiredDateForShowTransaksiAntarPemodal')?>",
+                    type:"POST",
+                    dataType:"JSON",
+                    data:{
+                        id:id
+                    },
+                    success:function(respon){
+                        console.log("This function No respon",respon);
+                        document.getElementById("txtBeliSaham").disabled = false;
+                    },
+                    error:function(){
+                        alert("Error CekLastDateAndExpiredDateForShowTransaksiAntarPemodal()");
+                        document.getElementById("txtBeliSaham").disabled = false;
+                    }
+
+                });    
+            }
+
             function ProsesHistoriDana(){
                 var history_dana = <?php echo json_encode($kelola_dana); ?>;
                 var html_data_item = "";

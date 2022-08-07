@@ -159,6 +159,7 @@
                                                             <p style="margin-top: 4px;">Harga saham awal : <span style="font-weight: bold;float:right;margin-right: 5px;"><?php echo number_format($value->harga_per_lembar,0,',','.') ?></span></p>
                                                             <p style="margin-top: 3px;">Total saham awal : <span style="font-weight: bold;float:right;margin-right: 5px;"><?php echo number_format($value->total_per_lembar,0,',','.') ?></span></p>
                                                             <p style="margin-top: 3px;">Harga wajar saham : <span style="font-weight: bold;float:right;margin-right: 5px;color: #0084ff" id="txtHargaWajar"></span></p>
+                                                            <p style="margin-top: 3px;">Harga Saham Saat Ini : <span style="font-weight: bold;float:right;margin-right: 5px;color: #0084ff" id="txtHargaSecondary"></span></p>
                                                         </div>
                                                     </div>
                                                     <?php endforeach ?>
@@ -245,9 +246,9 @@
                                                                     <td colspan="3" style="text-align: center;">Transaksi Jual</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Jumlah Order</td>
-                                                                    <td>Jumlah Saham</td>
                                                                     <td>Harga Saham</td>
+                                                                    <td>Jumlah Saham</td>
+                                                                    <td>Jumlah Order</td>
                                                                 </tr>
                                                                  <tbody id="transaksiJual"></tbody>
                                                             </table>
@@ -613,7 +614,7 @@
                        var data = response.getDataBeli.dataBeli[i];
                        htmlBeli += `<tr>`;
                        htmlBeli += `<td><a class="beli-href" href="#" onclick="modalDetailTransaksi(${$id},${data.harga_saham},'beli')">${numberWithDot(data.order_saham)}</a></td>`;
-                       htmlBeli += `<td>${numberWithDot(data.lembar_saham)}</td>`;
+                       htmlBeli += `<td>${numberWithDot(data.convert_lembar_saham)}</td>`;
                        htmlBeli += `<td>${numberWithDot(data.harga_saham)}</td>`;
                        htmlBeli += `</tr>`;
                        }     
@@ -715,9 +716,9 @@
                        for(i=0;i<response.getDataJual.dataJual.length;i++){
                        var data = response.getDataJual.dataJual[i];                   
                        htmlJual += `<tr>`;
-                       htmlJual += `<td><a class="jual-href" href="#" onclick="modalDetailTransaksi(${$id},${data.harga_saham},'jual')">${numberWithDot(data.order_saham)}</a></td>`;
-                       htmlJual += `<td>${numberWithDot(data.lembar_saham)}</td>`;
                        htmlJual += `<td>${numberWithDot(data.harga_saham)}</td>`;
+                       htmlJual += `<td>${numberWithDot(data.convert_lembar_saham)}</td>`;                       
+                       htmlJual += `<td><a class="jual-href" href="#" onclick="modalDetailTransaksi(${$id},${data.harga_saham},'jual')">${numberWithDot(data.order_saham)}</a></td>`;
                        htmlJual += `</tr>`;                     
                        }     
                        $("#transaksiJual").html(htmlJual) 
@@ -785,12 +786,15 @@
                 },
                 success:function(respon){
                     //ConvertBuy(lembarSaham);
+                    console.log("data Id == ",respon.insertIdLastBeli);
+                    GetTb_Transaksi_jual_Beli_where_Jual(lembarSaham,$("#hargaSaham").val(),respon.insertIdLastBeli);
                     clearBeli();
                     $("#modal-beli").modal("hide");
                     toastrshow("success", "Data Berhasil Disimpan", "success");
                     $("#lembarSaham").val("");
                     totalInvestasiJual();
                     document.getElementById("txtBeliSaham").disabled = false;
+                    CekConvert(respon.insertIdLastBeli);  
                 },
                 error:function(){
                     alert("Error Beli Saham");
@@ -799,7 +803,125 @@
 
             });
         }
-        function ConvertBuy(lembarSahamBeli)
+        function GetTb_Transaksi_jual_Beli_where_Jual(lembarSaham,hargaSaham,insertIdLastBeli){
+            var id = "<?php echo $id ?>";           
+            $.ajax({
+                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/GetTb_Transaksi_jual_Beli_where_Jual')?>",
+                type:"POST",
+                dataType:"JSON",
+                data:{
+                    id:id,
+                    lembarSaham : lembarSaham,
+                    hargaSaham: hargaSaham
+                },
+                success:function(respon){
+                    console.log(respon.WhereJual.data);
+                    var jual = respon.WhereJual.data;
+                    for(var i=0;i < jual.length;i++){
+                        if(jual.length <= 1 && lembarSaham < jual[i].convert_lembar_saham){
+                            UpdateJual(jual[i].id,(jual[i].convert_lembar_saham-lembarSaham));
+                             lembarSaham = lembarSaham - jual[i].convert_lembar_saham ;
+                             CekConvert(jual[i].id);
+                        }
+                        if(lembarSaham > 0){
+                            console.log(jual[i].id);
+                            UpdateJual(jual[i].id,0);
+                            if(lembarSaham<=0){                                                                
+                                console.log(jual[i].id,Math.abs(lembarSaham));
+                                UpdateJual(jual[i].id,Math.abs(lembarSaham));
+                            }
+                            lembarSaham = lembarSaham - jual[i].convert_lembar_saham ;
+                            if(lembarSaham<=0){                                                                
+                                console.log(jual[i].id,Math.abs(lembarSaham));
+                                UpdateJual(jual[i].id,Math.abs(lembarSaham));
+                            }
+                            CekConvert(jual[i].id);  
+                        }
+                    }
+
+                    if(lembarSaham>0){
+                        UpdateBeliLastId(lembarSaham,insertIdLastBeli);
+                        console.log("UpdateBeliLastId lembarSaham",lembarSaham);
+                        console.log("UpdateBeliLastId Last ID",insertIdLastBeli);
+                        console.log("UpdateBeliLastId Harga",hargaSaham);
+
+                    }
+                    if(lembarSaham <= 0){
+                        MathConvertZero(lembarSaham,insertIdLastBeli);
+                        console.log("MathConvertZero Update lembarSaham",lembarSaham);
+                        console.log("MathConvertZero Update Last ID",insertIdLastBeli);
+                        console.log("MathConvertZero Update Harga",hargaSaham);
+                    }
+                    if(jual.length != 0){
+                        updateHargaPerLembarSecondary(id,hargaSaham);
+                    }
+
+
+                },
+                error:function(){
+                    alert("Err GetTb_Transaksi_jual_Beli_where_Jual");
+                }
+
+            });
+        }
+
+         function UpdateJual(id_tb_transaksi_jual_beli,convert_lembar_saham){
+            
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateJual') ?>';
+            var data = {
+                Id : id_tb_transaksi_jual_beli,
+                convert_lembar_saham : convert_lembar_saham
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+               
+                },
+                error:function(){alert("UpdateJual Error")}
+            });
+        }
+
+        function UpdateBeliLastId(lembarSaham,insertIdLastBeli)
+        {
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateBeliLastId') ?>';
+            var data = {
+                insertIdLastBeli : insertIdLastBeli,
+                lembarSaham : lembarSaham
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+               
+                },
+                error:function(){alert("UpdateBeliLastId Error")}
+            });   
+        }
+        function MathConvertZero(lembarSaham,insertIdLastJualBeli)
+        {
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/MathConvertZero') ?>';
+            var data = {
+                insertIdLastJualBeli : insertIdLastJualBeli,
+                lembarSaham : lembarSaham
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+               
+                },
+                error:function(){alert("MathConvertZero Error")}
+            });   
+        }
+
+        /*function ConvertBuy(lembarSahamBeli)
         {
             var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertBuy') ?>';
             $.ajax({
@@ -826,27 +948,9 @@
                 },
                 error:function(){alert("ConvertBuySell Error")}
             });  
-        }
+        }*/
 
-        function UpdateJual(id_tb_transaksi_jual_beli,convert_lembar_saham){
-            
-            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateJual') ?>';
-            var data = {
-                Id : id_tb_transaksi_jual_beli,
-                convert_lembar_saham : convert_lembar_saham
-            }
-            $.ajax({
-                url :url,
-                type:"post",
-                data:data,
-                dataType:"Json",
-                success:function(respon){
-               
-                },
-                error:function(){alert("UpdateJual Error")}
-            });
-        }
-
+       
         function cekJualSaham(){
             var message = "";
             if(parseInt($("#lembarSahamJual").val()) > parseInt($("#txtSahamSaya").val())){
@@ -883,14 +987,16 @@
                 },
                 
                 success:function(respon){
-                    ConvertSell(lembarSahamJual,id);
+                    //ConvertSell(lembarSahamJual,id);
+                    GetTb_Transaksi_jual_Beli_where_Beli(lembarSahamJual,hargaSahamJual,respon.insertIdLastJual);
                     $("#modal-jual").modal("hide");
                     toastrshow("success", "Data Berhasil Disimpan", "success");
                     $("#lembarSahamJual").val("");
                     totalInvestasiJual();
                     clearJual();
                     document.getElementById("txtJualSaham").disabled = false;
-                    SendNotifSell();           
+                    SendNotifSell();
+                    CekConvert(respon.insertIdLastJual);           
                 },
                 error:function(){
                     alert("Error Beli Saham");
@@ -900,6 +1006,105 @@
             });
         }
 
+        function GetTb_Transaksi_jual_Beli_where_Beli(lembarSaham,hargaSaham,insertIdLastJual){
+            var id = "<?php echo $id ?>";           
+            $.ajax({
+                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/GetTb_Transaksi_jual_Beli_where_Beli')?>",
+                type:"POST",
+                dataType:"JSON",
+                data:{
+                    id:id,
+                    lembarSaham : lembarSaham,
+                    hargaSaham: hargaSaham
+                },
+                success:function(respon){
+                    console.log(respon.WhereBeli.data);
+                    var beli = respon.WhereBeli.data;
+                   /*if(beli.length <= 1){
+                        
+                    }*/
+                    for(var i=0;i < beli.length;i++){
+                        if(beli.length <= 1 && lembarSaham < beli[i].convert_lembar_saham){
+                            UpdateJual(beli[i].id,(beli[i].convert_lembar_saham-lembarSaham));
+                            lembarSaham = lembarSaham - beli[i].convert_lembar_saham ;
+                            CekConvert(beli[i].id);
+                        }
+                        else if(lembarSaham > 0){
+                            console.log(beli[i].id);
+                            UpdateJual(beli[i].id,0);
+                            if(lembarSaham<=0){                                                                
+                                console.log(beli[i].id,Math.abs(lembarSaham));
+                                UpdateJual(beli[i].id,Math.abs(lembarSaham));
+                            }
+                            lembarSaham = lembarSaham - beli[i].convert_lembar_saham ;
+                            if(lembarSaham<=0){                                                                
+                                console.log(beli[i].id,Math.abs(lembarSaham));
+                                UpdateJual(beli[i].id,Math.abs(lembarSaham));
+                            }
+                            CekConvert(beli[i].id);  
+                        }
+                        console.log("update looping lembarSaham ",lembarSaham);
+                    }
+                    if(lembarSaham>0){
+                        UpdateJualLastId(lembarSaham,insertIdLastJual);
+                        console.log("UpdateJualLastId Update lembarSaham",lembarSaham)
+                        console.log("UpdateJualLastId Update Last ID",insertIdLastJual)
+                        console.log("UpdateJualLastId Update Harga",hargaSaham)
+                    }
+                    if(lembarSaham <= 0 ){
+                        MathConvertZero(lembarSaham,insertIdLastJual);
+                        console.log("MathConvertZero Update lembarSaham",lembarSaham)
+                        console.log("MathConvertZero Update Last ID",insertIdLastJual)
+                        console.log("MathConvertZero Update Harga",hargaSaham)
+                    }
+                    if(beli.length != 0){
+                        updateHargaPerLembarSecondary(id,hargaSaham);
+                    }
+
+                },
+                error:function(){
+                    alert("Err GetTb_Transaksi_jual_Beli_where_Beli");
+                }
+
+            });
+        }
+
+        function UpdateJualLastId(lembarSaham,insertIdLastJual)
+        {
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/UpdateJualLastId') ?>';
+            var data = {
+                insertIdLastJual : insertIdLastJual,
+                lembarSaham : lembarSaham
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+               
+                },
+                error:function(){alert("UpdateJual Error")}
+            });   
+        }
+        function updateHargaPerLembarSecondary(id_properti,hargaSaham)
+        {
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/updateHargaPerLembarSecondary') ?>';
+            var data = {
+                id_properti : id_properti,
+                hargaSaham : hargaSaham
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+               
+                },
+                error:function(){alert("updateHargaPerLembarSecondary Error")}
+            }); 
+        }
        /* function ConvertLembarSaham()
         {
             var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/ConvertLembarSaham') ?>';
@@ -1027,11 +1232,17 @@
                     var countharga_per_lembar = respon.getHargaWajar.lembar_saham_beli;
                     total =  (harga_per_lembar / countharga_per_lembar);
                     }*/
+                    var hargaSecondary = respon.getHargaWajar.defaulHarga[0].harga_per_lembar_secondary;
                    $("#txtHargaWajar").html(numberWithDot(respon.getHargaWajar.defaulHarga[0].harga_per_lembar));
+                   if(hargaSecondary == null || hargaSecondary == 0 ){
+                        hargaSecondary = respon.getHargaWajar.defaulHarga[0].harga_per_lembar;
+                   }
+                   $("#txtHargaSecondary").html(numberWithDot(hargaSecondary));
                 },
                 error:function(){alert("Error Harga Wajar")}
             });
         }
+        /*saham saya*/
         function totalInvestasiJual()
         {
             var $id = "<?php echo $id ?>";
@@ -1040,14 +1251,19 @@
                 url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/totalInvestasiJual/'.$id)?>",
                 success:function(respon){
                  
-                  var getTbSahamConvertLembarSaham = respon.totalInvestasi.sumConvertLembarSahamTb_Saham[0].convert_lembar_saham;
+                  var getTbSahamConvertLembarSaham = respon.totalInvestasi.sumConvertLembarSahamTb_Saham[0].lembar_saham;
+                  var GetTb_Transaksi_Jual_Beli = respon.totalInvestasi.sumBeli[0].lembar_saham;
                   // var totalInves = respon.totalInvestasi.totalInvestasiFromViewBeli[0].jumlah_saham;   
-                   var totalSahamSaya = respon.totalInvestasi.sumBeli[0].convert_lembar_saham;
-                   if(totalSahamSaya == null || totalSahamSaya < 0){
-                     totalSahamSaya = 0;
+                   //var totalSahamSaya = respon.totalInvestasi.sumBeli[0].convert_lembar_saham;
+                   if(getTbSahamConvertLembarSaham == null){
+                     getTbSahamConvertLembarSaham = 0;
                    }
-                   if(getTbSahamConvertLembarSaham != null && getTbSahamConvertLembarSaham > 0){
-                      totalSahamSaya = parseInt(totalSahamSaya) + parseInt(getTbSahamConvertLembarSaham);
+                   if(GetTb_Transaksi_Jual_Beli == null){
+                        GetTb_Transaksi_Jual_Beli = 0;
+                   }
+                   var totalSahamSaya = parseInt(getTbSahamConvertLembarSaham) - parseInt(GetTb_Transaksi_Jual_Beli);
+                   if(totalSahamSaya == null){
+                     totalSahamSaya = 0;
                    }
                                         
                    $("#txtSahamSaya").val(totalSahamSaya);
@@ -1124,6 +1340,24 @@
                 },
                 error:function(){alert("Update SendNotifSell h Error")}
             });   
+        }
+
+        function CekConvert(id){
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail/CekConvert') ?>';
+            var idPemodal = "<?php echo $id ?>";
+            var data = {
+                id:id
+            }
+            $.ajax({
+                url :url,
+                type:"post",
+                data:data,
+                dataType:"Json",
+                success:function(respon){
+                   
+                },
+                error:function(){alert("CekConvert Error")}
+            }); 
         }
 
         </script>

@@ -159,6 +159,7 @@
                                                             <p style="margin-top: 4px;">Harga saham awal : <span style="font-weight: bold;float:right;margin-right: 5px;"><?php echo number_format($value->harga_per_lembar,0,',','.') ?></span></p>
                                                             <p style="margin-top: 3px;">Total saham awal : <span style="font-weight: bold;float:right;margin-right: 5px;"><?php echo number_format($value->total_per_lembar,0,',','.') ?></span></p>
                                                             <p style="margin-top: 3px;">Harga wajar saham : <span style="font-weight: bold;float:right;margin-right: 5px;color: #0084ff" id="txtHargaWajar"></span></p>
+                                                            <p style="margin-top: 3px;">Harga Saham Saat Ini : <span style="font-weight: bold;float:right;margin-right: 5px;color: #0084ff" id="txtHargaSecondary"></span></p>
                                                         </div>
                                                     </div>
                                                     <?php endforeach ?>
@@ -465,7 +466,8 @@
 				url: url,		
 				dataType:"JSON",
 				success: function(respon){
-					console.log('Data = ',respon.data);
+					//console.log('Data = ',respon.data.dataTransaksi[1]);
+                   
 					var html = "";
 					for(var i=0;i < respon.data.dataTransaksi.length;i++){
 						var getData = respon.data.dataTransaksi[i];
@@ -475,8 +477,13 @@
 						html += `<td>${getData.keterangan}</td>`;	
 						html += `<td>${getData.harga_saham}</td>`;	
 						html += `<td>${getData.lembar_saham}</td>`;	
-						html += `<td>${getData.status}</td>`;	
-						html += `<td><button type="button" onclick="batalTransaksi(data)" class="btn btn-pink btn-sm">Batalkan</button></td>`;	
+						html += `<td>${getData.status}</td>`;
+                        if(getData.status=="Berhasil" || getData.status == "Di Batalkan" ){
+                            html += `<td><button type="button" class="btn btn-secondary btn-sm disabled">Batalkan</button></td>`;
+                        }else{
+                            html += `<td><button type="button" onclick="BatalTransaksi('${encodeURIComponent(JSON.stringify(getData))}')" class="btn btn-pink btn-sm">Batalkan</button></td>`;    
+                        }	
+							
 						html += `</tr>`;	
 					}
 					$("#tableHistory").html(html);
@@ -491,27 +498,41 @@
                 dataType:"JSON",              
                 url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/HargaWajar/'.$id)?>",
                 success:function(respon){
-     
+                    /*var total = respon.getHargaWajar.defaulHarga[0].harga_per_lembar;
+                    if(respon.getHargaWajar.harga_per_lembar[0].harga_saham != null){
+                    var harga_per_lembar = respon.getHargaWajar.harga_per_lembar[0].harga_saham; 
+                    var countharga_per_lembar = respon.getHargaWajar.lembar_saham_beli;
+                    total =  (harga_per_lembar / countharga_per_lembar);
+                    }*/
+                    var hargaSecondary = respon.getHargaWajar.defaulHarga[0].harga_per_lembar_secondary;
                    $("#txtHargaWajar").html(numberWithDot(respon.getHargaWajar.defaulHarga[0].harga_per_lembar));
+                   if(hargaSecondary == null || hargaSecondary == 0 ){
+                        hargaSecondary = respon.getHargaWajar.defaulHarga[0].harga_per_lembar;
+                   }
+                   $("#txtHargaSecondary").html(numberWithDot(hargaSecondary));
                 },
                 error:function(){alert("Error Harga Wajar")}
             });
         }
-        /*function batalTransaksi(data)
-        {
-            var $id = "";
+        function BatalTransaksi(getData) {
+            getData = JSON.parse(decodeURIComponent(getData))
+            console.log('Send Data Onclick = ',getData);
+            var url = '<?php echo base_url('/transaksi/Transaksi_Antar_Pemodal_Detail_Histori/BatalTransaksi') ?>';
+            var data = {
+                 getData: getData
+            }
             $.ajax({
+                url :url,
+                type:"post",
                 data:data,
-                dataType:"JSON",
-                type:"POST",              
-                url:"<?php echo base_url('index.php/transaksi/Transaksi_Antar_Pemodal_Detail/HargaWajar/'.$id)?>",
+                dataType:"Json",
                 success:function(respon){
-     
-                   $("#txtHargaWajar").html(numberWithDot(respon.getHargaWajar.defaulHarga[0].harga_per_lembar));
+                    toastrshow("success", "Order Berhasil", "success");                    
+                     setTimeout(function(){window.location.reload()}, 1500);
                 },
-                error:function(){alert("Error Harga Wajar")}
+                error:function(){alert("batalTransaksi Error")}
             });
-        }*/
+        }
         </script>
         <script type="text/javascript" src="<?php echo base_url("assets/js/moment.min.js"); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url("assets/js/jquery-2.1.1.js"); ?>"></script>
