@@ -90,7 +90,7 @@ class Properti extends MY_Controller
     	foreach ($tb_properti as $item_properti) {
     		foreach ($tb_transaksi as $item_transaksi) {
     			if($item_properti->jumlah_dana == $item_transaksi->nominal){
-    				$this->db->query("update tb_properti set start_date = '$startDate'  where id = '$id'");
+    				$this->db->query("update tb_properti set start_date = '$startDate',status_projek= 'Selesai'  where id = '$id'");
     				$message = "Update Success";
     			}
     		}

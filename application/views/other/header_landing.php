@@ -70,7 +70,8 @@
                 </li>
 
                 <div class="dropdown">
-                <li class="nav-item"><a  onclick="iconNotifUpdate()" class="nav-link js-scroll-trigger bold text-primary btn-custom-padding pb-0" data-toggle="dropdown" href="#"><i class="las la-bell" style="font-size: 32px; line-height: 12px;"></i>
+                <!-- a onclick ="iconNotifUpdate()" -->
+                <li class="nav-item"><a  onclick="" class="nav-link js-scroll-trigger bold text-primary btn-custom-padding pb-0" data-toggle="dropdown" href="#"><i class="las la-bell" style="font-size: 32px; line-height: 12px;"></i>
                 </a>
                 <div id="getBodyNotifikasi" ></div>
                 </li>

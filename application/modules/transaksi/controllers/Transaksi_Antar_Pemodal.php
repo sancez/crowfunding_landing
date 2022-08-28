@@ -12,7 +12,7 @@ class Transaksi_Antar_Pemodal extends MY_Controller
 	public function index()
 	{
 		$data["properti"] = $this->db->select('*')		
-		->limit(1000)->where('status_projek','Tersedia')
+		->limit(1000)->where('status_projek','Selesai')
 		->get("tb_properti")->result();
 		$this->load->view("transaksi/Transaksi_Antar_Pemodal",$data);
 	}

@@ -12,7 +12,7 @@ class Transaksi_Antar_Pemodal_Detail_Histori extends MY_Controller
 	public function Detail($id)
 	{
 		$data['getProperti'] =  $this->db->select('*')
-			->where('status_projek','Tersedia')
+			->where('status_projek','Selesai')
 			->where('id',$id)
 			->get("tb_properti")->result();
 		$this->load->view("transaksi/Transaksi_Antar_Pemodal_Detail_Histori",$data);

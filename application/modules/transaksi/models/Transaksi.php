@@ -116,7 +116,7 @@
         	$return_data["data_next"] = $this->db->get("v_transaksi")->result();
 		    return $return_data;
 		}
-
+		
 		public function HtmlTransaksi($param){
 		    $rHtml ="";
 			$query = $this->GetTransaksi($param);
@@ -146,6 +146,12 @@
 	                    } else {
 	                        $foto = "<img style='width: 100%; height:auto;' src='".$this->config->item("cdn_url")."/".$foto[0]."'>";
 	                    }
+	                    if($this->foglobal->SahamSaya($item->id_properti) != 0){
+	                    	$Saham_Saya = $this->foglobal->SahamSaya($item->id_properti);
+	                    	$Saham_Saya = $this->foglobal->rupiah($Saham_Saya); 
+	                    }else{
+	                    	$Saham_Saya = $this->foglobal->rupiah($total_saham);
+	                    }
 	                    $rHtml .= "<tr>
 									    <td><a href='".base_url()."properti/detail.html?id=".$item->id_properti."'><center style='max-height: 130px; overflow: hidden;'>".$foto."</center></a></td>
 									    <td>
@@ -165,7 +171,18 @@
 									    <td class='text-right'>
 									    	<label class='bold mb-1'>".$this->foglobal->rupiah($total_investasi, true)."</label><br>
 									    	<label class='bold mb-1'>".$this->foglobal->rupiah($harga_per_saham, true)."</label><br>
-									    	<label class='bold mb-1'>".$this->foglobal->rupiah($total_saham)."</label><br>
+									    	<label class='bold mb-1'>".
+									    	/*if(SahamSaya($item->id_properti) != 0  ){
+									    		SahamSaya($item->id_properti)
+									    	}else{
+									    		$this->foglobal->rupiah($total_saham)	
+									    	}*/
+									    	$Saham_Saya
+									    	//$this->foglobal->rupiah($total_saham)	
+									    	//$this->foglobal->SahamSaya($item->id_properti)
+									    	
+									    	.
+									    	"</label><br>
 									    	<label class='bold mb-1'>".$item->tipe_aset."</label><br>
 									    	<label class='bold mb-1'>".$item->lepas_saham."%</label><br>
 									    	<label class='bold mb-1'>".$item->dividen_period."</label><br>
