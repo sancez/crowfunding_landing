@@ -405,34 +405,48 @@
 		}
 
 
-
+		/*totalInvestasiJual*/
 		public function SahamSaya($id){
 			$email = $this->session->userdata('user')->email;
 	
+			$sumConvertLembarSahamTb_Saham = $this->db->select_sum('lembar_saham')
+			->where('email',$email)
+			->where('id_properti',$id)
+			->where('keterangan','beli')
+			->get('tb_saham')->result();
+
+			$addSaham = $this->db->select_sum('lembar_saham')
+			->where('email',$email)
+			->where('id_properti',$id)
+			->where('keterangan','beli')
+			->get('tb_transaksi_jual_beli')->result();		
+		
 			$sumBeli = $this->db->select_sum('lembar_saham')
 			->where('email',$email)
 			->where('id_properti',$id)
 			->where('keterangan','jual')
 			->get('tb_transaksi_jual_beli')->result();
 
-			$sumConvertLembarSahamTb_Saham = $this->db->select_sum('lembar_saham')
-			->where('email',$email)
-			->where('id_properti',$id)
-			->get('tb_saham')->result();
-
-			foreach ($sumBeli as $item) {
-				$tb_transaksi_jb = $item->lembar_saham;
-			}
 			foreach ($sumConvertLembarSahamTb_Saham as $item1) {
 				$tb_saham = $item1->lembar_saham;
 			}
-
-			if($tb_transaksi_jb == null){
-				$tb_transaksi_jb = 0;
+			foreach ($addSaham as $item2) {
+				$add_saham = $item2->lembar_saham;
 			}
+			foreach ($sumBeli as $item) {
+				$tb_transaksi_jb = $item->lembar_saham;
+			}			
+
 			if($tb_saham == null){
 				$tb_saham = 0;
 			}
+			if($add_saham == null){
+				$add_saham = 0;
+			}
+			if($tb_transaksi_jb == null){
+				$tb_transaksi_jb = 0;
+			}
+			$tb_saham = $tb_saham + $add_saham;
 			$data = $tb_saham - $tb_transaksi_jb;
 			if($data == null){
 				$data = 0;

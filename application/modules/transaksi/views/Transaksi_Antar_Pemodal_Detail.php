@@ -186,14 +186,12 @@
                                                         <div class="b11" style="width: 50%;height: 100%;background: ;float: left;">
                                                         <center>
                                                             <button class="btn btn-primary" onclick="modalBeli()" style=";padding-right: 40px;padding-left: 40px;">Beli</button>
-                                                            <button class="btn btn-primary ml-2 mr-2">Ralat Transaksi</button>
                                                             <button class="btn btn-primary">Batal Transaksi</button>
                                                         </center>
                                                         </div>
                                                         <div class="b11" style="width: 50%;height: 100%;background: ;float: left;">
                                                             <center>
                                                             <button class="btn btn-primary" onclick="modalJual()" style=";padding-right: 40px;padding-left: 40px;">Jual</button>
-                                                            <button class="btn btn-primary ml-2 mr-2">Ralat Transaksi</button>
                                                             <button class="btn btn-primary">Batal Transaksi</button>
                                                         </center>
                                                         </div>
@@ -818,26 +816,38 @@
                     console.log(respon.WhereJual.data);
                     var jual = respon.WhereJual.data;
                     for(var i=0;i < jual.length;i++){
-                        if(jual.length <= 1 && lembarSaham < jual[i].convert_lembar_saham){
+                        /*if(jual.length <= 1 && lembarSaham < jual[i].convert_lembar_saham){
                             UpdateJual(jual[i].id,(jual[i].convert_lembar_saham-lembarSaham));
                              lembarSaham = lembarSaham - jual[i].convert_lembar_saham ;
                              CekConvert(jual[i].id);
-                        }
+                             console.log("CekConvert1=>",jual[i].id);
+                        }*/
                         if(lembarSaham > 0){
-                            console.log(jual[i].id);
-                            UpdateJual(jual[i].id,0);
-                            if(lembarSaham<=0){                                                                
-                                console.log(jual[i].id,Math.abs(lembarSaham));
-                                UpdateJual(jual[i].id,Math.abs(lembarSaham));
+                            if(lembarSaham >= jual[i].convert_lembar_saham ){
+                                console.log(jual[i].id);
+                                UpdateJual(jual[i].id,0);
+                                if(lembarSaham<=0){                                                                
+                                    console.log(jual[i].id,Math.abs(lembarSaham));
+                                    UpdateJual(jual[i].id,Math.abs(lembarSaham));
+                                }
+                                lembarSaham = lembarSaham - jual[i].convert_lembar_saham ;
+                                if(lembarSaham<=0){                                                                
+                                    console.log(jual[i].id,Math.abs(lembarSaham));
+                                    UpdateJual(jual[i].id,Math.abs(lembarSaham));
+                                }
+                                CekConvert(jual[i].id);  
+                                console.log("CekConvert =>",jual[i].id);
+                            }else{
+                                 UpdateJual(jual[i].id,(jual[i].convert_lembar_saham-lembarSaham));
+                                 lembarSaham = lembarSaham - jual[i].convert_lembar_saham ;
+                                 CekConvert(jual[i].id);
+                                 console.log("CekConvert1=>",jual[i].id);
                             }
-                            lembarSaham = lembarSaham - jual[i].convert_lembar_saham ;
-                            if(lembarSaham<=0){                                                                
-                                console.log(jual[i].id,Math.abs(lembarSaham));
-                                UpdateJual(jual[i].id,Math.abs(lembarSaham));
-                            }
-                            CekConvert(jual[i].id);  
                         }
-                    }
+
+
+                    } /*end looping*/
+
 
                     if(lembarSaham>0){
                         UpdateBeliLastId(lembarSaham,insertIdLastBeli);
@@ -1024,27 +1034,37 @@
                         
                     }*/
                     for(var i=0;i < beli.length;i++){
-                        if(beli.length <= 1 && lembarSaham < beli[i].convert_lembar_saham){
+                        /*if(beli.length <= 1 && lembarSaham < beli[i].convert_lembar_saham){
                             UpdateJual(beli[i].id,(beli[i].convert_lembar_saham-lembarSaham));
                             lembarSaham = lembarSaham - beli[i].convert_lembar_saham ;
                             CekConvert(beli[i].id);
-                        }
-                        else if(lembarSaham > 0){
-                            console.log(beli[i].id);
-                            UpdateJual(beli[i].id,0);
-                            if(lembarSaham<=0){                                                                
-                                console.log(beli[i].id,Math.abs(lembarSaham));
-                                UpdateJual(beli[i].id,Math.abs(lembarSaham));
+                            console.log("CekConvert1 use 0 => ",beli[i].id)
+                        }*/
+                        if(lembarSaham > 0){
+                            if(lembarSaham >= beli[i].convert_lembar_saham){
+                                console.log(beli[i].id);
+                                UpdateJual(beli[i].id,0);
+                                if(lembarSaham<=0){                                                                
+                                    console.log(beli[i].id,Math.abs(lembarSaham));
+                                    UpdateJual(beli[i].id,Math.abs(lembarSaham));
+                                }
+                                lembarSaham = lembarSaham - beli[i].convert_lembar_saham ;
+                                if(lembarSaham<=0){                                                                
+                                    console.log(beli[i].id,Math.abs(lembarSaham));
+                                    UpdateJual(beli[i].id,Math.abs(lembarSaham));
+                                }
+                                CekConvert(beli[i].id); 
+                                console.log("CekConvert2 use 0 =>",beli[i].id); 
+                            }else{
+                                UpdateJual(beli[i].id,(beli[i].convert_lembar_saham-lembarSaham));
+                                lembarSaham = lembarSaham - beli[i].convert_lembar_saham ;
+                                CekConvert(beli[i].id);
+                                console.log("CekConvert1 use 0 => ",beli[i].id);
                             }
-                            lembarSaham = lembarSaham - beli[i].convert_lembar_saham ;
-                            if(lembarSaham<=0){                                                                
-                                console.log(beli[i].id,Math.abs(lembarSaham));
-                                UpdateJual(beli[i].id,Math.abs(lembarSaham));
-                            }
-                            CekConvert(beli[i].id);  
+
                         }
                         console.log("update looping lembarSaham ",lembarSaham);
-                    }
+                    } /*end looping*/
                     if(lembarSaham>0){
                         UpdateJualLastId(lembarSaham,insertIdLastJual);
                         console.log("UpdateJualLastId Update lembarSaham",lembarSaham)
@@ -1252,20 +1272,22 @@
                 success:function(respon){
                  
                   var getTbSahamConvertLembarSaham = respon.totalInvestasi.sumConvertLembarSahamTb_Saham[0].lembar_saham;
+                  var addSaham = respon.totalInvestasi.addSaham[0].lembar_saham;
                   var GetTb_Transaksi_Jual_Beli = respon.totalInvestasi.sumBeli[0].lembar_saham;
-                  // var totalInves = respon.totalInvestasi.totalInvestasiFromViewBeli[0].jumlah_saham;   
-                   //var totalSahamSaya = respon.totalInvestasi.sumBeli[0].convert_lembar_saham;
+                  if(addSaham == null){
+                     addSaham = 0;
+                   }
                    if(getTbSahamConvertLembarSaham == null){
                      getTbSahamConvertLembarSaham = 0;
                    }
                    if(GetTb_Transaksi_Jual_Beli == null){
                         GetTb_Transaksi_Jual_Beli = 0;
                    }
+                   getTbSahamConvertLembarSaham = parseInt(getTbSahamConvertLembarSaham) + parseInt(addSaham);
                    var totalSahamSaya = parseInt(getTbSahamConvertLembarSaham) - parseInt(GetTb_Transaksi_Jual_Beli);
                    if(totalSahamSaya == null){
                      totalSahamSaya = 0;
-                   }
-                                        
+                   }                       
                    $("#txtSahamSaya").val(totalSahamSaya);
                 },
                 error:function(){alert("Error Total Investasi")}

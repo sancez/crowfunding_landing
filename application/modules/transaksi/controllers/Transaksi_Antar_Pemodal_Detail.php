@@ -51,7 +51,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		//->where('status !=','Berhasil')
 		->where('status !=','Di Batalkan')
 		->where('convert_lembar_saham !=',0)
-		->where('email !=',$email)
+		//->where('email !=',$email)
 		->where('keterangan','beli')
 		->where('id_properti',$id)
 		->group_by('harga_saham')
@@ -75,7 +75,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		//->where('status !=','Berhasil')
 		->where('status !=','Di Batalkan')
 		->where('convert_lembar_saham !=',0)
-		->where('email !=',$email)
+		//->where('email !=',$email)
 		->where('id_properti',$id)
 		->where('keterangan','jual')
 
@@ -114,7 +114,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		$insert_id = $this->db->insert_id();
 		echo json_encode(["insertIdLastBeli" => $insert_id]);
 	}
-	public function ConvertBuy()
+	/*public function ConvertBuy()
 	{
 		$email = $this->session->userdata('user')->email;
 		$jual = $this->db->select('*')
@@ -132,7 +132,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 			"jual" => $jual			
 		];
 		echo json_encode(["ConvertBuy" => $result]);
-	}
+	}*/
 	//Waktu Press Beli dan update tb jual(status)
 	public function UpdateJual()
 	{
@@ -143,7 +143,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		if($convert_lembar_saham <= 0){
 			$this->db->query("update tb_transaksi_jual_beli set status = 'Berhasil',convert_lembar_saham = '0' where id = '$id' and email != '$email'");
 		}
-		if($convert_lembar_saham >= 0){
+		if($convert_lembar_saham > 0){
 			$this->db->query("update tb_transaksi_jual_beli set status = 'Sedang Berlangsung',convert_lembar_saham = '$convert_lembar_saham' where id = '$id' and email != '$email'");
 		}
 		$result = [
@@ -158,7 +158,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		$insertIdLastBeli = $this->input->post("insertIdLastBeli");
 		$lembarSaham = $this->input->post("lembarSaham");
 
-		if($lembarSaham >= 0){
+		if($lembarSaham > 0){
 			$this->db->query("update tb_transaksi_jual_beli set status = 'Sedang Berlangsung',convert_lembar_saham = '$lembarSaham' where id = '$insertIdLastBeli'");
 		}
 		$result = [
@@ -173,7 +173,7 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		$insertIdLastJual = $this->input->post("insertIdLastJual");
 		$lembarSaham = $this->input->post("lembarSaham");
 
-		if($lembarSaham >= 0){
+		if($lembarSaham > 0){
 			$this->db->query("update tb_transaksi_jual_beli set status = 'Sedang Berlangsung',convert_lembar_saham = '$lembarSaham' where id = '$insertIdLastJual'");
 		}
 		$result = [
@@ -341,6 +341,18 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 	public function totalInvestasiJual($id)
 	{
 		$email = $this->session->userdata('user')->email;
+
+		$sumConvertLembarSahamTb_Saham = $this->db->select_sum('lembar_saham')
+		->where('email',$email)
+		->where('id_properti',$id)
+		->where('keterangan','beli')
+		->get('tb_saham')->result();
+
+		$addSaham = $this->db->select_sum('lembar_saham')
+		->where('email',$email)
+		->where('id_properti',$id)
+		->where('keterangan','beli')
+		->get('tb_transaksi_jual_beli')->result();		
 	
 		$sumBeli = $this->db->select_sum('lembar_saham')
 		->where('email',$email)
@@ -348,15 +360,11 @@ class Transaksi_Antar_Pemodal_Detail extends MY_Controller
 		->where('keterangan','jual')
 		->get('tb_transaksi_jual_beli')->result();
 
-		$sumConvertLembarSahamTb_Saham = $this->db->select_sum('lembar_saham')
-		->where('email',$email)
-		->where('id_properti',$id)
-		->get('tb_saham')->result();
-		
-
-		$result = [
-			"sumBeli" => $sumBeli,
-			"sumConvertLembarSahamTb_Saham" => $sumConvertLembarSahamTb_Saham
+		$result = [			 
+			"sumConvertLembarSahamTb_Saham" => $sumConvertLembarSahamTb_Saham,
+			"addSaham" => $addSaham,
+			"sumBeli" => $sumBeli
+			
 		];
 		echo json_encode(["totalInvestasi" => $result]);
 	}
